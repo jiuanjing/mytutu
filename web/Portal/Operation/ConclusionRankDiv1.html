@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>综合排名分析</title>
+    <script type="text/javascript" src="../../scripts/jquery-1.6.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui.min.js"></script>
+    <script src="../../scripts/DatePicker_zh_cn.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/jquery-ui.css"/>
+    <script type="text/javascript" src="../../scripts/jquery.easyui.min.js"></script>
+    <script src="../../scripts/echarts.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/condition-table.css"/>
+    <link rel="stylesheet" type="text/css" href="../../scripts/easyui-1.3.6/themes/myself_fg/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../scripts/easyui-1.3.6/themes/icon.css">
+    <script type="text/javascript" src="../../scripts/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../scripts/hanzi2pinyin.js"></script>
+    <script>
+
+        $(function () {
+            showDiv001();
+        });
+
+        var date = new Date();
+        var year = date.getFullYear() - 1;
+
+        var url = window.location.search;
+        var params = url.split('&');
+        var kpi = params[0].split('=')[1];
+        var kpiName = params[1].split('=')[1];
+
+        function getColor() {
+            var colors = [
+                '#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
+                '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
+                '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
+                '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
+            ];
+            if (kpi == 2100) {
+                return colors.slice(1, 4);
+            }
+            if (kpi == 2400) {
+                return colors.slice(4, 8);
+            }
+            if (kpi == 2500) {
+                return colors.slice(11, 14);
+            }
+        }
+
+        function showDiv001() {
+            $.ajax({
+                url: "SewageTotalRankDiv2.jsp",
+                dataType: "json", //传参的数据类型
+                type: "post", //传参方式，get 或post
+                data: {
+                    date: year,
+                    kpi: kpi
+                },
+                error: function (msg) { //若Ajax处理失败后返回的信息
+                    alert("Ajax获取数据失败");
+                },
+                success: function (return_data) { //若Ajax处理成功后返回的信息
+                    require.config({
+                        paths: {
+                            echarts: '../../scripts'
+                        }
+                    });
+
+                    var poleValue = return_data.data3[0];
+                    var averageValue = return_data.data4[0];
+                    var kpi_id = return_data.kpi_id;
+                    // 使用
+                    require(
+                        [
+                            'echarts',
+                            'echarts/chart/bar',
+                            'echarts/chart/line'
+                        ],
+                        function (ec, theme) {
+                            var myChart = ec.init(document.getElementById('main1'), 'macarons');
+
+                            var option = {
+                                color: getColor(),
+                                title: {
+                                    text: year + "年污水板块" + kpiName + '排名分析',
+                                    x: 'center',
+                                    textStyle: {
+                                        fontSize: 15,
+                                        fontWeight: 'bolder',
+                                        color: '#666666'
+                                    }
+                                },
+                                grid: {
+                                    x: 130
+                                },
+                                dataZoom: {
+                                    show: true,
+                                    orient: 'vertical',
+                                    start: 100,
+                                    end: 77
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    formatter: "{b} <br/> {a} : {c}"
+                                },
+                                toolbox: {
+                                    show: false,
+                                    feature: {
+                                        mark: {show: true},
+                                        dataView: {show: true, readOnly: false},
+                                        magicType: {show: true, type: ['line', 'bar']},
+                                        restore: {show: true},
+                                        saveAsImage: {show: true}
+                                    }
+                                },
+                                calculable: true,
+                                xAxis: [
+                                    {
+                                        type: 'value'
+                                    }
+                                ],
+                                yAxis: [
+                                    {
+                                        type: 'category',
+                                        boundaryGap: true,//类目起始和结束两端空白策略，见下图，默认为true留空，false则顶头
+                                        axisLabel: {
+                                            rotate: 0,
+                                            textStyle: {
+                                                fontSize: 11
+                                            }
+                                        },
+                                        data: return_data.data1
+                                    }
+                                ],
+                                series: [
+                                    {
+                                        name: kpiName,
+                                        type: 'bar',
+                                        data: return_data.data2,
+                                        markLine: {
+                                            data: [
+                                                [
+                                                    {name: '公司平均值', xAxis: averageValue, yAxis: -10},
+                                                    {value: averageValue, xAxis: averageValue, yAxis: 110}
+                                                ],
+                                                [
+                                                    {name: '行业标杆值', xAxis: poleValue, yAxis: -10},
+                                                    {value: poleValue, xAxis: poleValue, yAxis: 110}
+                                                ]
+                                            ]
+                                        }
+                                    }
+                                ]
+                            };
+
+                            myChart.setOption(option);
+                            window.onresize = myChart.resize;
+                        }
+                    );
+                }
+            });
+        }
+    </script>
+    <style>
+        body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        #main1 {
+            height: 100%;
+            position: absolute;
+            width: 100%;
+        }
+
+        #query_condition {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="query_condition" class="condition_div">
+    <table class="condition_table">
+        <tr>
+            <td width="7%">年度：</td>
+            <td width="8%">
+                <input id="date" class="easyui-combobox" name="year"
+                       data-options="valueField:'id',textField:'text',url:'year.json'" panelHeight="100"
+                       style="width:80px">
+            </td>
+            <td width="4%">指标：</td>
+            <td width="12%">
+                <input id="kpi" class="easyui-combobox" name="kpi" panelHeight="100" style="width:120px">
+            </td>
+            <td width="5%"><a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)"
+                              onclick="confirmIt();">确定</a></td>
+            <td width="5%"><a class="easyui-linkbutton" data-options="iconCls:'icon-back'" href="javascript:void(0)"
+                              onclick="window.history.back();">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></td>
+            <td>&nbsp;<input type="hidden" id="value1" name="value1" value=""></td>
+        </tr>
+    </table>
+</div>
+<div id="main1"></div>
+</body>
+</html>
