@@ -21,6 +21,7 @@
 <script src="../../../scripts/auto/jquery.autocomplete.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../scripts/auto/jquery.autocomplete.css"/>
 <script src="../../../scripts/myIndicator/myIndicator3.js"></script>
+<script src="../../../scripts/OpBaseDept.js"></script>
 <script type="text/javascript">
     $(function () {
         var indicator = myIndicator("正在加载中...");
@@ -36,7 +37,7 @@
             type: "post",
             data: {
                 year: $('#year').datebox('getValue'),
-                dept: $('#dept').combobox('getValue'),
+                dept: $("#dept").val(),
                 type: 1
             },
             error: function (msg) {
@@ -58,7 +59,7 @@
 
                             var option = {
                                 title: {
-                                    text: $('#dept').combobox('getText')+'供水规模及项目数量分析',
+                                    text: $('#dept').find('option:selected').text()+'供水规模及项目数量分析',
                                     x: 'center',
                                     textStyle: {
                                         color: '#1b1b1b',
@@ -149,14 +150,7 @@
             </td>
             <td width="5%"><span style="font-size: 12px;">大区：</span></td>
             <td width="5%">
-                <select name="dept" id="dept" class="easyui-combobox">
-                    <option value="1" selected>东南大区</option>
-                    <option value="2">北方大区</option>
-                    <option value="3">中原大区</option>
-                    <option value="4">北京大区</option>
-                    <option value="5">中南大区</option>
-                    <option value="6">西南大区</option>
-                    <option value="7">浙江环投</option>
+                <select name="dept" id="dept">
                 </select>
             </td>
             <td width="5%"><a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)"

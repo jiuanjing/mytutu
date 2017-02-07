@@ -17,9 +17,16 @@
     if (db.dbOpen()) {
         try {
             String sqlstr = "";
+            String isDisplay = request.getParameter("isDisplay");
+            isDisplay = isDisplay == null ? "0" : "1";
             //获取分析的数据库表的名字
             String tableName = request.getParameter("tableName").trim();
-            sqlstr = "select a.company_id , a.company_name from echarts." + tableName + " a where a.status = 1";
+            if ("1".equals(isDisplay)) {
+                sqlstr = "select distinct company_id,company_name from echarts.dim_company_fn where status=1 " +
+                        "and flag_display = 1";
+            } else {
+                sqlstr = "select a.company_id , a.company_name from echarts." + tableName + " a where a.status = 1";
+            }
             //System.out.print(sqlstr);
             ResultSet rs = null;
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集

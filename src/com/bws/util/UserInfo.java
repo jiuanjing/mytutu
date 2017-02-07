@@ -19,6 +19,7 @@ public class UserInfo implements Serializable {
     private String email = "";
     private String phone = "";
     private String mobile = "";
+    private int dept_id_op = 0;
     private int page_size;
     private int status;
 
@@ -40,11 +41,12 @@ public class UserInfo implements Serializable {
                 return false;
             }
 
-            String sqlstr = "select user_id,user_account,user_password,user_name,company_id,dept_id,position,role_id," +
-                    "email,phone,mobile,status,page_size from bim.user_info where status=1 and user_account='" +
-                    UserAccount + "' and user_password='" + UserPassword + "'";
+            String sqlstr = "select user_id,user_account,user_password,user_name,company_id,t.dept_id,position,role_id," +
+                    "email,phone,mobile,status,page_size,t1.dept_id_op from bim.user_info t,bim.department" +
+                    " t1 where t1.dept_id = t.dept_id and" +
+                    " status=1 and user_account=? and user_password=?";
 
-            Vector<Vector<String>> ve = db.executeQueryVt(sqlstr);
+            Vector<Vector<String>> ve = db.executeQueryVt(sqlstr, UserAccount, UserPassword);
 
             if (ve == null || ve.size() == 0) {
                 return false;
@@ -63,7 +65,7 @@ public class UserInfo implements Serializable {
                 user.setMobile((ve.elementAt(0)).elementAt(10).toString());
                 user.setStatus(Integer.parseInt((ve.elementAt(0)).elementAt(11).toString()));
                 user.setPageSize(Integer.parseInt((ve.elementAt(0)).elementAt(12).toString()));
-
+                user.setDeptIDOp(Integer.parseInt((ve.elementAt(0)).elementAt(13).toString()));
                 user.setLoginFlag(true);
 
                 int RoleID = user.getRoleID();
@@ -118,6 +120,7 @@ public class UserInfo implements Serializable {
                 user.setMobile((ve.elementAt(0)).elementAt(10).toString());
                 user.setStatus(Integer.parseInt((ve.elementAt(0)).elementAt(11).toString()));
                 user.setPageSize(Integer.parseInt((ve.elementAt(0)).elementAt(12).toString()));
+                user.setDeptIDOp(Integer.parseInt((ve.elementAt(0)).elementAt(14).toString()));
 
                 user.setLoginFlag(true);
 
@@ -379,5 +382,11 @@ public class UserInfo implements Serializable {
         return Session;
     }
 
+    public int getDeptIDOp() {
+        return dept_id_op;
+    }
 
+    public void setDeptIDOp(int dept_id_op) {
+        this.dept_id_op = dept_id_op;
+    }
 }

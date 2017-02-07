@@ -85,16 +85,16 @@
             List<String> list7 = new ArrayList<String>();//日期
             DecimalFormat df = new DecimalFormat("0.00");
             for (int i = 0; i < list2.size(); i++) {
-                Double a = list1.get(i);
-                Double b = list2.get(i);
-                Double c = list3.get(i);
+                Double a = list1.get(i);//同期
+                Double b = list2.get(i);//实际
+                Double c = list3.get(i);//预算
                 if (c != 0) {
                     list5.add(df.format(b / c * 100));
                 } else {
                     list5.add("0");
                 }
                 if (b != 0) {
-                    list6.add(df.format((b - c) / c * 100));
+                    list6.add(df.format((b - a) / a * 100));
                 } else {
                     list6.add("0");
                 }

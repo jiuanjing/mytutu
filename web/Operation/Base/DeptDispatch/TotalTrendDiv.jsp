@@ -40,9 +40,9 @@
             String sql = "SELECT V1.DATE_ID,NVL(SCALE, 0),V1.BU_ID,V1.TYPE_NAME " +
             "  FROM (SELECT DATE_ID, BU_ID, T2.TYPE_NAME " +
                     "    FROM (SELECT DISTINCT (T.DATE_ID) " +
-                    "      FROM ECHARTS.DM_OP_YR_BASE_SCALE_dept T where t.dept_id = " + dept + ") V11, " +
+                    "      FROM ECHARTS.DM_OP_YR_BASE_SCALE_dept T ) V11, " +
                     "      (SELECT DISTINCT (T.BU_ID) " +
-                    "      FROM ECHARTS.DM_OP_YR_BASE_SCALE_dept T where t.dept_id = " + dept + ") V12, " +
+                    "      FROM ECHARTS.DM_OP_YR_BASE_SCALE_dept T ) V12, " +
                     "      ECHARTS.DIM_OP_COMPANY_TYPE T2 " +
                     "   WHERE V12.BU_ID = T2.TYPE_ID) V1, " +
                     "    (SELECT T.DATE_ID, SUM(T.SCALE) SCALE, T.BU_ID " +

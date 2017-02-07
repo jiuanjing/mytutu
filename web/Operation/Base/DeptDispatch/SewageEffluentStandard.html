@@ -40,6 +40,7 @@
             type: "post",
             data: {
                 year: $('#year').datebox('getValue'),
+                dept: $('#dept').val()
             },
             error: function (msg) {
                 alert("Ajax获取数据失败");
@@ -62,7 +63,7 @@
 
                             var option = {
                                 title: {
-                                    text: '出水标准规模及项目数量分析',
+                                    text: $('#dept').find('option:selected').text() +'出水标准规模及项目数量分析',
                                     x: 'center',
                                     textStyle: {
                                         color: '#1b1b1b',
@@ -89,8 +90,14 @@
                                     }
                                 },
                                 legend: {
-                                    y: 40,
-                                    data: ["东南大区", "北方大区", "中原大区", "北京大区", "中南大区", "西南大区"]
+                                    y:30,
+                                    data: (function () {
+                                        var a = [];
+                                        for (var i = 0; i < return_data.length; i++) {
+                                            a.push(return_data[i][3]);
+                                        }
+                                        return a;
+                                    })()
                                 },
                                 toolbox: {
                                     show: true,
@@ -116,121 +123,31 @@
                                         splitNumber: 10,
                                         scale: false
                                     }
-                                ],
-                                // 确认是选择 把所有大区都放在同一个页面的方式
-                                //还是选择 可以选择大区的方式
-                                series: [
-                                    {
-                                        name: '东南大区',
-                                        type: 'scatter',
-                                        tooltip: {
-                                            trigger: 'item',
-                                            formatter: function (params) {
-                                                return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
-                                                        + '规模：' + params.value[1] + '万吨<br/>'
-                                                        + '出水标准：' + params.value[2] + '<br/>';
-                                            },
-                                            axisPointer: {
-                                                show: true
-                                            }
-                                        },
-                                        symbolSize: function (value) {
-                                            return value[1] *5/ value[0]
-                                        },
-                                        data: return_data[0]
-                                    }, {
-                                        name: '北方大区',
-                                        type: 'scatter',
-                                        tooltip: {
-                                            trigger: 'item',
-                                            formatter: function (params) {
-                                                return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
-                                                        + '规模：' + params.value[1] + '万吨<br/>'
-                                                        + '出水标准：' + params.value[2] + '<br/>';
-                                            },
-                                            axisPointer: {
-                                                show: true
-                                            }
-                                        },
-                                        symbolSize: function (value) {
-                                            return value[1] *5/ value[0]
-                                        },
-                                        data:return_data[1]
-                                    }, {
-                                        name: '中原大区',
-                                        type: 'scatter',
-                                        tooltip: {
-                                            trigger: 'item',
-                                            formatter: function (params) {
-                                                return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
-                                                        + '规模：' + params.value[1] + '万吨<br/>'
-                                                        + '出水标准：' + params.value[2] + '<br/>';
-                                            },
-                                            axisPointer: {
-                                                show: true
-                                            }
-                                        },
-                                        symbolSize: function (value) {
-                                            return value[1] *5/ value[0]
-                                        },
-                                        data: return_data[2]
-                                    }, {
-                                        name: '北京大区',
-                                        type: 'scatter',
-                                        tooltip: {
-                                            trigger: 'item',
-                                            formatter: function (params) {
-                                                return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
-                                                        + '规模：' + params.value[1] + '万吨<br/>'
-                                                        + '出水标准：' + params.value[2] + '<br/>';
-                                            },
-                                            axisPointer: {
-                                                show: true
-                                            }
-                                        },
-                                        symbolSize: function (value) {
-                                            return value[1] *5/ value[0]
-                                        },
-                                        data: return_data[3]
-                                    }, {
-                                        name: '中南大区',
-                                        type: 'scatter',
-                                        tooltip: {
-                                            trigger: 'item',
-                                            formatter: function (params) {
-                                                return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
-                                                        + '规模：' + params.value[1] + '万吨<br/>'
-                                                        + '出水标准：' + params.value[2] + '<br/>';
-                                            },
-                                            axisPointer: {
-                                                show: true
-                                            }
-                                        },
-                                        symbolSize: function (value) {
-                                            return value[1] *5/ value[0]
-                                        },
-                                        data: return_data[4]
-                                    }, {
-                                        name: '西南大区',
-                                        type: 'scatter',
-                                        tooltip: {
-                                            trigger: 'item',
-                                            formatter: function (params) {
-                                                return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
-                                                        + '规模：' + params.value[1] + '万吨<br/>'
-                                                        + '出水标准：' + params.value[2] + '<br/>';
-                                            },
-                                            axisPointer: {
-                                                show: true
-                                            }
-                                        },
-                                        symbolSize: function (value) {
-                                            return value[1] *5/ value[0]
-                                        },
-                                        data: return_data[5]
-                                    }
                                 ]
                             };
+                            var series = [];
+                            for (var i =0;i<return_data.length;i++){
+                                var inData = {};
+                                inData.name = return_data[i][3];
+                                inData.type = 'scatter';
+                                inData.tooltip = {
+                                    trigger: 'item',
+                                    formatter: function (params) {
+                                        return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
+                                            + '规模：' + params.value[1] + '万吨<br/>'
+                                            + '出水标准：' + params.value[2] + '<br/>';
+                                    },
+                                    axisPointer: {
+                                        show: true
+                                    }
+                                };
+                                inData.symbolSize= function (value) {
+                                    return value[2] *2
+                                };
+                                inData.data = [return_data[i]];
+                                series.push(inData);
+                            }
+                            option.series=series;
                             myChart.setOption(option);
                         }
                 );
@@ -246,6 +163,18 @@
 <div id="query_condition" class="condition_div">
     <table class="condition_table">
         <tr>
+            <td width="7%">所属大区：</td>
+            <td width="8%">
+                <select name="dept" id="dept">
+                    <option value="1" selected>东南大区</option>
+                    <option value="2">北方大区</option>
+                    <option value="3">中原大区</option>
+                    <option value="4">北京大区</option>
+                    <option value="5">中南大区</option>
+                    <option value="6">西南大区</option>
+                    <option value="7">浙江环投</option>
+                </select>
+            </td>
             <td width="7%">年度：</td>
             <td width="8%">
                 <input id="year" class="easyui-datebox" style="width:80px" value="2016"

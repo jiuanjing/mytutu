@@ -9,7 +9,4 @@
             <param-value>JSESSIONID2</param-value>
         </session-param>
     </session-descriptor>
-    <context-root>
-        /cwbi
-    </context-root>
 </weblogic-web-app>

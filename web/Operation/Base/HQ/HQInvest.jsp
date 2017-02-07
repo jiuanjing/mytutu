@@ -15,7 +15,7 @@
     DBOperation db = new DBOperation(true);
     if (db.dbOpen()) {
         try {
-            String sql = "SELECT SUM(T.INVEST_AMOUNT), T2.DEPT_NAME  " +
+            String sql = "SELECT round(SUM(T.INVEST_AMOUNT/10000),2), T2.DEPT_NAME  " +
                     "  FROM ECHARTS.DM_OP_YR_BASE_SCALE_DEPT T, ECHARTS.DIM_DEPT_OP T2  " +
                     " WHERE T.DATE_ID = ?" +
                     "   AND T.DEPT_ID = T2.DEPT_ID  " +

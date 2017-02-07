@@ -160,7 +160,15 @@
         }
     </style>
     <script type="text/javascript" charset="utf-8">
+        function IEVersion() {
+            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+            if (userAgent.indexOf('Trident/7.0') == -1&&userAgent.indexOf('Edge')==-1) {
+                $('OBJECT').remove();
+                alert('请使用IE11浏览器或微软Edge浏览器');
+            }
+        }
         $(function () {
+            IEVersion();
             $(".god-wrap").css("padding-top", ($(window).height() - 650) / 2 + "px");
             $('#win1').window({
                 width: 400,

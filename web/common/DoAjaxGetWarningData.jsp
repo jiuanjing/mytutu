@@ -31,7 +31,7 @@
             String types = request.getParameter("types");
 
 
-            String where = " where a.company_id = b.company_id and b.status=1";
+            String where = " where a.company_id = b.company_id and b.status=1 and b.flag_display = 1";
 
 
             if ("0".equals(types)) {
@@ -75,7 +75,7 @@
             String orderBy = " order by a." + target + " " + order;
             sqlstr += where;
             sqlstr += orderBy;
-            //System.out.println(sqlstr);
+//            System.out.println(sqlstr);
             ResultSet rs = null;
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集
 

@@ -29,18 +29,16 @@
             String order = request.getParameter("order");
 
 
-            String where = " where a.company_id = b.company_id and b.status=1";
+            String where = " where a.company_id = b.company_id and b.status=1 and b.flag_display=1";
 
             String date_str = DateTool.getPreYear();
             where += " and date_id =" + date_str;
 
             sqlstr = "select a." + target + ",a.company_id,b.brief_name from echarts." +
                     tableName + " a,echarts.DIM_COMPANY_FN b";
-
             String orderBy = " order by a." + target + " " + order;
             sqlstr += where;
             sqlstr += orderBy;
-            //System.out.println(sqlstr);
             ResultSet rs = null;
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集
 

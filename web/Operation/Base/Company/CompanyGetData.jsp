@@ -6,12 +6,18 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="userInfo" class="com.bws.util.UserInfo" scope="session"/>
 <%
     DBOperation dbOperation = new DBOperation(true);
     if (dbOperation.dbOpen()) {
         try {
+
             String deptId = request.getParameter("deptId");
-            deptId = deptId.length() == 0 ? "1" : deptId;
+            String deptIdOp = String.valueOf(userInfo.getDeptIDOp());
+
+            deptIdOp = deptIdOp.equals("0") ? "1" : deptIdOp;
+            deptId = deptId.length() == 0 ? deptIdOp : deptId;
+
             String sql = "SELECT T1.BRIEF_NAME, " +
                     "    T.OPERATION_STATUS, " +
                     "    T.PROJECT_PROPERTY, " +
@@ -22,14 +28,14 @@
                     "    T.YEAR_LIMIT, " +
                     "    T.STOCK_PERCENT, " +
                     "    T.REGISTER_CAPITAL, " +
-                    "    T.HEADS_COUNT_TOP + T.HEADS_COUNT_MIDDLE + T.HEADS_COUNT_BASE, " +
+                    "    T.HEADS_COUNT, " +
                     "    T.HEADS_COUNT_TOP, " +
                     "    T.HEADS_COUNT_MIDDLE, " +
                     "    T.HEADS_COUNT_BASE, " +
                     "    T.SCALE_WATER, " +
                     "    T.SCALE_SEWAGE, " +
                     "    T.SCALE_RECLAIMED, " +
-                    "    T.SCALE_WATER + T.SCALE_SEWAGE + T.SCALE_RECLAIMED, " +
+                    "    T.SCALE , " +
                     "    T.SCALE_SOLID_WASTE " +
                     "  FROM ECHARTS.DM_OP_YR_BASE_SCALE T, " +
                     "    ECHARTS.DIM_OP_COMPANY      T1, " +

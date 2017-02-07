@@ -94,7 +94,7 @@
                     list5.add("0");
                 }
                 if (b != 0) {
-                    list6.add(df.format((b - c) / c * 100));
+                    list6.add(df.format((b - a) / a * 100));
                 } else {
                     list6.add("0");
                 }

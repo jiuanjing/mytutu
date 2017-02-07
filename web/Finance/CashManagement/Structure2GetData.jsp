@@ -62,7 +62,7 @@
             }
             sqlstr = "select d.region_name,round(sum(a." + target + ")/10000,2) from echarts."
                     + tableName + " a,echarts.dim_company_fn b,echarts.dim_region c,echarts.dim_region d"
-                    + " where c.region_id=b.region_id and B.FLAG_DISPLAY = 1 and  b.company_id=a.company_id and c.uplevel_id=d.region_id and a.company_id > 2";
+                    + " where c.region_id=b.region_id and   b.company_id=a.company_id and c.uplevel_id=d.region_id and a.company_id > 2";
 
             sqlstr = sqlstr + where + " and b.status=1 and b.company_level=2 and c.status=1 and d.status=1 group by d.region_name";
             ResultSet rs = null;

@@ -128,14 +128,6 @@
                 alert("Ajax获取数据失败");
             },
             success: function (return_data) { //若Ajax处理成功后返回的信息
-                var dept = return_data.deptName;
-                var depts = [];
-                for (var i = 0; i < dept.length; i++) {
-                    if (depts.indexOf(dept[i]) == -1) {
-                        depts.push(dept[i]);
-                    }
-                }
-                var len = depts.length;
                 require.config({
                     paths: {
                         echarts: '../../../scripts'
@@ -162,15 +154,13 @@
                             },
                             tooltip: {
                                 trigger: 'item',
-//                                formatter: "{b} <br/>{a4}:{c4}万吨 <br/>" +
-//                                "{a3}:{c3}万吨 <br/>{a2}:{c2}万吨<br/>{a1}:{c1}万吨<br>{a}:{c}万吨",
-                                formatter: "{b} <br/>{a}:{c}万吨",
+                                formatter: "{a}:{c}万吨/天",
                                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                                 }
                             },
                             legend: {
-                                data: ['供水', '污水', '固废', '供排一体', '海水淡化'],
+                                data: ['供水', '污水', '再生水','固废'],
                                 y: 30
                             },
                             grid: {
@@ -193,13 +183,17 @@
                             xAxis: [
                                 {
                                     type: 'category',
-                                    data: depts
+                                    axisLabel:{
+                                        interval:0
+                                    },
+                                    data: ['总规模 已运营 \n东南大区','总规模 已运营 \n北方大区','总规模 已运营 \n中原大区',
+                                        '总规模 已运营 \n北京大区','总规模 已运营 \n中南大区','总规模 已运营 \n西南大区','总规模 已运营 \n浙江环投']
                                 }
                             ],
                             yAxis: [
                                 {
                                     type: 'value',
-                                    name: '处理规模(万吨)'
+                                    name: '处理规模(万吨/天)'
                                 }
                             ],
                             series: [
@@ -207,34 +201,25 @@
                                     name: '供水',
                                     type: 'bar',
                                     stack: '总规模',
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.scale.slice(0, len)
+                                    data: return_data.scale.water
                                 },
                                 {
                                     name: '污水',
                                     type: 'bar',
                                     stack: '总规模',
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.scale.slice(len, 2 * len)
+                                     
+                                    data: return_data.scale.waste
+                                },
+                                {
+                                    name: '再生水',
+                                    type: 'bar',
+                                    stack: '总规模',
+
+                                    data: return_data.scale.renew
                                 },
                                 {
                                     name: '固废',
                                     type: 'bar',
-                                    stack: '总规模',
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.scale.slice(2 * len, 3 * len)
-                                },
-                                {
-                                    name: '供排一体',
-                                    type: 'bar',
-                                    stack: '总规模',
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.scale.slice(3 * len, 4 * len)
-                                },
-                                {
-                                    name: '海水淡化',
-                                    type: 'bar',
-                                    stack: '总规模',
                                     itemStyle:{
                                         normal: {
                                             label: {
@@ -256,44 +241,38 @@
                                                             total += parseFloat(option.series[i].data[index]);
                                                         }
                                                     }
-                                                    return '总规模\n'+ total.toFixed(2);
+                                                    return total.toFixed(2);
                                                 }
                                             }
                                         }
                                     },
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.scale.slice(4 * len, 5 * len)
+                                    stack: '总规模',
+                                     
+                                    data: return_data.scale.solid
                                 },
                                 {
                                     name: '供水',
                                     type: 'bar',
                                     stack: '已运营',
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.actualScale.slice(0, len)
+                                     
+                                    data: return_data.actualScale.water
                                 },
                                 {
                                     name: '污水',
                                     type: 'bar',
                                     stack: '已运营',
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.actualScale.slice(len, 2 * len)
+                                     
+                                    data: return_data.actualScale.waste
+                                },
+                                {
+                                    name: '再生水',
+                                    type: 'bar',
+                                    stack: '已运营',
+
+                                    data: return_data.actualScale.renew
                                 },
                                 {
                                     name: '固废',
-                                    type: 'bar',
-                                    stack: '已运营',
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.actualScale.slice(2 * len, 3 * len)
-                                },
-                                {
-                                    name: '供排一体',
-                                    type: 'bar',
-                                    stack: '已运营',
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.actualScale.slice(3 * len, 4 * len)
-                                },
-                                {
-                                    name: '海水淡化',
                                     type: 'bar',
                                     stack: '已运营',
                                     itemStyle:{
@@ -317,13 +296,13 @@
                                                             total += parseFloat(option.series[i].data[index]);
                                                         }
                                                     }
-                                                    return '已运营\n'+total.toFixed(2);
+                                                    return total.toFixed(2);
                                                 }
                                             }
                                         }
                                     },
-                                    //切割数组可以得到当年的数据，并返回一个数组
-                                    data: return_data.actualScale.slice(4 * len, 5 * len)
+                                     
+                                    data: return_data.actualScale.solid
                                 }
                             ]
                         };
@@ -370,7 +349,7 @@
     </script>
 </div>
 <hr class="Main_hr" align="center" width="95%"/>
-<div id="main1" style="height:500px;width: 43%;float: left;"></div>
-<div id="main2" style="height:500px;width: 57%;float: right;"></div>
+<div id="main1" style="height:500px;width: 37%;float: left;"></div>
+<div id="main2" style="height:500px;width: 63%;float: right;"></div>
 </body>
 </html>

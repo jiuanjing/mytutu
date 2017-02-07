@@ -62,7 +62,10 @@
                         field: 'kpiType',
                         title: '指标类型',
                         align: 'center',
-                        width: 50
+                        width: 50,
+                        styler:function (value,row,index) {
+                            return 'color:blue;';
+                        }
                     },
                     {
                         field: 'kpiName',
@@ -145,7 +148,6 @@
                                         x: 'left',
                                         y: 'bottom',
                                         splitList: [
-
                                             {start: 200},
                                             {start: 100, end: 200},
                                             {start: 50, end: 100},
@@ -199,7 +201,7 @@
                                     ]
                                 };
                                 var ecConfig = require('echarts/config');
-                                var zrEvent = require('zrender/tool/event');
+
                                 var curIndx = 0;
                                 var mapType = [
                                     'china',
@@ -420,7 +422,7 @@
                                 var option = {
                                     title: {
                                         text: '全国水务投资额区域分布',
-                                        subtext: '单位：万元',
+                                        subtext: '单位：亿元',
                                         x: 'center'
                                     },
                                     tooltip: {
@@ -432,7 +434,7 @@
                                                 res += myseries[i].name;
                                                 for (var j = 0; j < myseries[i].data.length; j++) {
                                                     if (myseries[i].data[j].name == params.name) {
-                                                        res += ' : ' + myseries[i].data[j].value + '万元</br>';
+                                                        res += ' : ' + myseries[i].data[j].value + '亿元</br>';
                                                     }
                                                 }
                                             }
@@ -448,12 +450,12 @@
                                         x: 'left',
                                         y: 'bottom',
                                         splitList: [
-                                            {start: 100000},
-                                            {start: 70000, end: 90000},
-                                            {start: 50000, end: 70000},
-                                            {start: 30000, end: 50000},
-                                            {start: 10000, end: 30000},
-                                            {end: 10000}
+                                            {start: 10},
+                                            {start: 7, end: 9},
+                                            {start: 5, end: 7},
+                                            {start: 3, end: 5},
+                                            {start: 1, end: 3},
+                                            {end: 1}
                                         ],
                                         color: ['#191970', '#0000CD', '#4169E1', '#00BFFF', '#87CEFA', '#ADD8E6']
                                     },

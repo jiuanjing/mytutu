@@ -190,8 +190,6 @@
                 alert("Ajax获取数据失败");
             },
             success: function (return_data) {
-                console.log(return_data);
-                console.log(return_data.pole);
                 require.config({
                     paths: {
                         echarts: '../../../../scripts'
@@ -217,21 +215,13 @@
                                     }
                                 },
                                 tooltip: {
-                                    trigger: 'axis',
-                                    //formatter:'{b}<br>{c}<br>{d}<br>{b1}<br>{c1}<br>{d1}'
-//                                            formatter: function (params) {
-//                                                var returnStr = params[0].name + '<br />';
-//                                                for (var i = 0; i < params.length; i++) {
-//                                                    returnStr += params[i].seriesName + ':' + Util.commafy(params[i].data) + '<br />';
-//                                                }
-//                                                return returnStr;
-//                                            }
+                                    trigger: 'axis'
                                 },
                                 legend: {
                                     show: true,
                                     orient: 'vertical',
                                     x: 'right',
-                                    y: 'bottom',
+                                    y: 'bottom',//
                                     data: ['标杆值', year + '年', year - 1 + '年', year - 2 + '年']
                                 }
                                 ,

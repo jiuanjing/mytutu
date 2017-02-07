@@ -59,10 +59,10 @@
                 }
             }
             if ("mfocfir".equalsIgnoreCase(target)) {
-                sqlstr = "select a.date_id,a." + target + ",b.brief_name from " + tableName + " a,echarts.dim_company_fn b where a.company_id = b.company_id and B.FLAG_DISPLAY = 1";
+                sqlstr = "select a.date_id,a." + target + ",b.brief_name from " + tableName + " a,echarts.dim_company_fn b where a.company_id = b.company_id ";
 
             } else {
-                sqlstr = "select a.date_id,round(a." + target + "/10000,2),b.brief_name from " + tableName + " a,echarts.dim_company_fn b where a.company_id = b.company_id and B.FLAG_DISPLAY = 1";
+                sqlstr = "select a.date_id,round(a." + target + "/10000,2),b.brief_name from " + tableName + " a,echarts.dim_company_fn b where a.company_id = b.company_id ";
 
             }
             sqlstr = sqlstr + where + " and b.status=1 and b.company_level=2 order by a." + target + " desc";

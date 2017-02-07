@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../../../css/jquery-ui.css"/>
     <script type="text/javascript" src="../../../scripts/jquery.easyui.min.js"></script>
     <script src="../../../scripts/echarts.js"></script>
-    <!-- 设置时万元 -->
+    <!-- 设置时亿元 -->
     <script src="../../../scripts/MyDate.js"></script>
     <script src="../../../scripts/OP_OperationGeneral.js"></script>
     <link rel="stylesheet" type="text/css" href="../../../scripts/easyui-1.3.6/themes/myself_fg/easyui.css">
@@ -21,6 +21,7 @@
     <script type="text/javascript" src="../../../scripts/easyui-lang-zh_CN.js"></script>
     <link rel="stylesheet" type="text/css" href="../../../css/operation_general.css"/>
     <script src="../../../scripts/myIndicator/myIndicator3.js"></script>
+    <script src="../../../scripts/OpBaseDept.js"></script>
     <style type="text/css">
         .div3 {
             position: absolute;
@@ -157,39 +158,10 @@
                                     }
                                 ],
                                 series: [
-                                    //todo 没有的条目 如何显示 如何处理
                                     {
                                         name: '供水',
                                         type: 'bar',
                                         stack: '规模数量',
-                                        itemStyle:{
-                                            normal: {
-                                                label: {
-                                                    show: true,
-                                                    position: 'top',textStyle:{
-                                                        fontSize:9
-                                                    },
-                                                    formatter: function (params) {
-                                                        //计算汇总值
-                                                        var name = params.name;
-                                                        var index;  //x轴序列顺序
-                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
-                                                            if (name == option.xAxis[0].data[i]) {
-                                                                index = i;
-                                                                break;
-                                                            }
-                                                        }
-                                                        var total = 0;
-                                                        for (var i = 0; i < option.series.length; i++) {
-                                                            if (option.series[i].stack == params.series.stack) {
-                                                                total += parseInt(option.series[i].data[index]);
-                                                            }
-                                                        }
-                                                        return total;
-                                                    }
-                                                }
-                                            }
-                                        },
                                         //切割数组可以得到当年的数据，并返回一个数组
                                         data: rdata.data.slice(0, len)
                                     },
@@ -197,115 +169,30 @@
                                         name: '污水',
                                         type: 'bar',
                                         stack: '规模数量',
-                                        itemStyle:{
-                                            normal: {
-                                                label: {
-                                                    show: true,
-                                                    position: 'top',textStyle:{
-                                                        fontSize:9
-                                                    },
-                                                    formatter: function (params) {
-                                                        //计算汇总值
-                                                        var name = params.name;
-                                                        var index;  //x轴序列顺序
-                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
-                                                            if (name == option.xAxis[0].data[i]) {
-                                                                index = i;
-                                                                break;
-                                                            }
-                                                        }
-                                                        var total = 0;
-                                                        for (var i = 0; i < option.series.length; i++) {
-                                                            if (option.series[i].stack == params.series.stack) {
-                                                                total += parseInt(option.series[i].data[index]);
-                                                            }
-                                                        }
-                                                        return total;
-                                                    }
-                                                }
-                                            }
-                                        },
                                         data: rdata.data.slice(len, 2 * len)
                                     },
                                     {
                                         name: '固废',
                                         type: 'bar',
                                         stack: '规模数量',
-                                        itemStyle:{
-                                            normal: {
-                                                label: {
-                                                    show: true,
-                                                    position: 'top',textStyle:{
-                                                        fontSize:9
-                                                    },
-                                                    formatter: function (params) {
-                                                        //计算汇总值
-                                                        var name = params.name;
-                                                        var index;  //x轴序列顺序
-                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
-                                                            if (name == option.xAxis[0].data[i]) {
-                                                                index = i;
-                                                                break;
-                                                            }
-                                                        }
-                                                        var total = 0;
-                                                        for (var i = 0; i < option.series.length; i++) {
-                                                            if (option.series[i].stack == params.series.stack) {
-                                                                total += parseInt(option.series[i].data[index]);
-                                                            }
-                                                        }
-                                                        return total;
-                                                    }
-                                                }
-                                            }
-                                        },
                                         data: rdata.data.slice(2 * len, 3 * len)
                                     },
                                     {
                                         name: '供排一体',
                                         type: 'bar',
                                         stack: '规模数量',
-                                        itemStyle:{
-                                            normal: {
-                                                label: {
-                                                    show: true,
-                                                    position: 'top',textStyle:{
-                                                        fontSize:9
-                                                    },
-                                                    formatter: function (params) {
-                                                        //计算汇总值
-                                                        var name = params.name;
-                                                        var index;  //x轴序列顺序
-                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
-                                                            if (name == option.xAxis[0].data[i]) {
-                                                                index = i;
-                                                                break;
-                                                            }
-                                                        }
-                                                        var total = 0;
-                                                        for (var i = 0; i < option.series.length; i++) {
-                                                            if (option.series[i].stack == params.series.stack) {
-                                                                total += parseInt(option.series[i].data[index]);
-                                                            }
-                                                        }
-                                                        return total;
-                                                    }
-                                                }
-                                            }
-                                        },
                                         data: rdata.data.slice(3 * len, 4 * len)
                                     },
                                     {
                                         name: '海水淡化',
                                         type: 'bar',
-                                        itemStyle:{
+                                        stack: '规模数量',
+                                        data: rdata.data.slice(4 * len, 5 * len),
+                                        itemStyle: {
                                             normal: {
                                                 label: {
                                                     show: true,
                                                     position: 'top',
-                                                    textStyle:{
-                                                      fontSize:9
-                                                    },
                                                     formatter: function (params) {
                                                         //计算汇总值
                                                         var name = params.name;
@@ -326,9 +213,7 @@
                                                     }
                                                 }
                                             }
-                                        },
-                                        stack: '规模数量',
-                                        data: rdata.data.slice(4 * len, 5 * len)
+                                        }
                                     },
                                     {
                                         name: '总增长率',
@@ -337,12 +222,8 @@
                                         showAllSymbol: true,
                                         symbolSize: 1,     //点的大小
                                         data: rdata.rate,
-                                        symbol: 'rectangle',
-                                        itemStyle: {
-                                            normal: {
-                                                color: '#4e72b8'
-                                            }
-                                        }
+                                        symbol: 'rectangle'
+
                                     }
                                 ]
                             };
@@ -397,8 +278,8 @@
                                     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                                         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                                     },
-                                    formatter: "{b}年 <br/>{a4} : {c4}万元<br/>{a3}:{c3}万元 " +
-                                    "<br/>{a2}:{c2}万元 <br/>{a1}:{c1}万元<br/>{a}:{c}万元"
+                                    formatter: "{b}年 <br/>{a4} : {c4}个<br/>{a3}:{c3}个 " +
+                                    "<br/>{a2}:{c2}个 <br/>{a1}:{c1}个<br/>{a}:{c}个"
                                 },
                                 legend: {
                                     y: 30,
@@ -436,7 +317,7 @@
                                 yAxis: [
                                     {
                                         type: 'value',
-                                        name: '项目数量(万元)'
+                                        name: '项目数量(个)'
                                     }
                                 ],
                                 series: [
@@ -468,26 +349,34 @@
                                     {
                                         name: '海水淡化',
                                         type: 'bar',
-                                        formatter: function (params) {
-                                            //计算汇总值
-                                            var name = params.name;
-                                            var index;  //x轴序列顺序
-                                            for (var i = 0; i < option.xAxis[0].data.length; i++) {
-                                                if (name == option.xAxis[0].data[i]) {
-                                                    index = i;
-                                                    break;
-                                                }
-                                            }
-                                            var total = 0;
-                                            for (var i = 0; i < option.series.length; i++) {
-                                                if (option.series[i].stack == params.series.stack) {
-                                                    total += parseInt(option.series[i].data[index]);
-                                                }
-                                            }
-                                            return total;
-                                        },
                                         stack: '规模数量',
-                                        data: rdata.data.slice(4 * len, 5 * len)
+                                        data: rdata.data.slice(4 * len, 5 * len),
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top',
+                                                    formatter: function (params) {
+                                                        //计算汇总值
+                                                        var name = params.name;
+                                                        var index;  //x轴序列顺序
+                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
+                                                            if (name == option.xAxis[0].data[i]) {
+                                                                index = i;
+                                                                break;
+                                                            }
+                                                        }
+                                                        var total = 0;
+                                                        for (var i = 0; i < option.series.length; i++) {
+                                                            if (option.series[i].stack == params.series.stack) {
+                                                                total += parseInt(option.series[i].data[index]);
+                                                            }
+                                                        }
+                                                        return total;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 ]
                             };
@@ -612,26 +501,34 @@
                                     {
                                         name: '海水淡化',
                                         type: 'bar',
-                                        formatter: function (params) {
-                                            //计算汇总值
-                                            var name = params.name;
-                                            var index;  //x轴序列顺序
-                                            for (var i = 0; i < option.xAxis[0].data.length; i++) {
-                                                if (name == option.xAxis[0].data[i]) {
-                                                    index = i;
-                                                    break;
-                                                }
-                                            }
-                                            var total = 0;
-                                            for (var i = 0; i < option.series.length; i++) {
-                                                if (option.series[i].stack == params.series.stack) {
-                                                    total += parseInt(option.series[i].data[index]);
-                                                }
-                                            }
-                                            return total;
-                                        },
                                         stack: '规模数量',
-                                        data: rdata.data.slice(4 * len, 5 * len)
+                                        data: rdata.data.slice(4 * len, 5 * len),
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top',
+                                                    formatter: function (params) {
+                                                        //计算汇总值
+                                                        var name = params.name;
+                                                        var index;  //x轴序列顺序
+                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
+                                                            if (name == option.xAxis[0].data[i]) {
+                                                                index = i;
+                                                                break;
+                                                            }
+                                                        }
+                                                        var total = 0;
+                                                        for (var i = 0; i < option.series.length; i++) {
+                                                            if (option.series[i].stack == params.series.stack) {
+                                                                total += parseInt(option.series[i].data[index]);
+                                                            }
+                                                        }
+                                                        return total;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 ]
                             };
@@ -759,8 +656,8 @@
                                 },
                                 tooltip: {
                                     trigger: 'axis',
-                                    formatter: "{b}年 <br/>{a4} : {c4}万元<br/>{a3}:{c3}万元 " +
-                                    "<br/>{a2}:{c2}万元 <br/>{a1}:{c1}万元<br/>{a}:{c}万元",
+                                    formatter: "{b}年 <br/>{a4} : {c4}亿元<br/>{a3}:{c3}亿元 " +
+                                    "<br/>{a2}:{c2}亿元 <br/>{a1}:{c1}亿元<br/>{a}:{c}亿元",
                                     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                                         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                                     }
@@ -801,7 +698,7 @@
                                 yAxis: [
                                     {
                                         type: 'value',
-                                        name: '投资额(万元)'
+                                        name: '投资额(亿元)'
                                     }
                                 ],
                                 series: [
@@ -833,26 +730,34 @@
                                     {
                                         name: '海水淡化',
                                         type: 'bar',
-                                        formatter: function (params) {
-                                            //计算汇总值
-                                            var name = params.name;
-                                            var index;  //x轴序列顺序
-                                            for (var i = 0; i < option.xAxis[0].data.length; i++) {
-                                                if (name == option.xAxis[0].data[i]) {
-                                                    index = i;
-                                                    break;
-                                                }
-                                            }
-                                            var total = 0;
-                                            for (var i = 0; i < option.series.length; i++) {
-                                                if (option.series[i].stack == params.series.stack) {
-                                                    total += parseInt(option.series[i].data[index]);
-                                                }
-                                            }
-                                            return total;
-                                        },
                                         stack: '规模数量',
-                                        data: rdata.data.slice(4 * len, 5 * len)
+                                        data: rdata.data.slice(4 * len, 5 * len),
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top',
+                                                    formatter: function (params) {
+                                                        //计算汇总值
+                                                        var name = params.name;
+                                                        var index;  //x轴序列顺序
+                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
+                                                            if (name == option.xAxis[0].data[i]) {
+                                                                index = i;
+                                                                break;
+                                                            }
+                                                        }
+                                                        var total = 0;
+                                                        for (var i = 0; i < option.series.length; i++) {
+                                                            if (option.series[i].stack == params.series.stack) {
+                                                                total += parseInt(option.series[i].data[index]);
+                                                            }
+                                                        }
+                                                        return total;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 ]
                             };
@@ -937,6 +842,8 @@
                 }
             });
         }
+
+
         function confirmIt() {
             var indicator = myIndicator("正在加载中...");
             $('#cc').layout('collapse', 'east');
@@ -982,13 +889,6 @@
                        data-options="formatter:yearFormatter,parser:yearParser">
                 <hr>
                 <select style="width: 100px;" id="dept">
-                    <option value="1" selected>东南大区</option>
-                    <option value="2">北方大区</option>
-                    <option value="3">中原大区</option>
-                    <option value="4">北京大区</option>
-                    <option value="5">中南大区</option>
-                    <option value="6">西南大区</option>
-                    <option value="7">浙江环投</option>
                 </select>
                 <div style="text-align:right;padding:10px 0;">
                     <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)"

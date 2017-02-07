@@ -15,6 +15,9 @@
     String str_return = "";
     String DeptID = "";   //0表示无管辖部门，1表示投运一部，2表示投运二部，部门ID
     String RegionID = "";
+
+    String isDisplay = request.getParameter("isDisplay");
+    isDisplay = isDisplay == null ? "0" : "1";
     if (request.getParameter("DeptID") != null && !(request.getParameter("DeptID").equals(""))) {
         DeptID = request.getParameter("DeptID");
     } else {
@@ -33,13 +36,22 @@
             str_return = "<select size=1 id=\"CompanyID\" name=\"CompanyID\" onchange=\"\">";
             str_return += "<option value=\"\">--请选择公司--";
 
+            String sqlstr = "";
             //下拉框值部分
-            String sqlstr = "select distinct company_id,brief_name from echarts.dim_company_fn where status=1 ";
+
+            if ("0".equals(isDisplay)) {
+                sqlstr = "select distinct company_id,brief_name from echarts.dim_company_fn where status=1 " +
+                        "and flag_display = 1 ";
+            }
+            if ("1".equals(isDisplay)){
+                sqlstr = "select distinct company_id,brief_name from echarts.dim_company_fn where status=1 ";
+            }
             sqlstr = sqlstr + " and dept_id=" + DeptID;
             sqlstr = sqlstr + " and region_id=" + RegionID;
             sqlstr = sqlstr + " order by order_no";
 
             ResultSet rs = null;
+//            System.out.println(sqlstr);
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集
 
             if (rs == null) {

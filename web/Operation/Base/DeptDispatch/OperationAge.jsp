@@ -13,7 +13,7 @@
 
     if (dbOperation.dbOpen()) {
         try {
-            String sql2 = "SELECT T1.BRIEF_NAME, T2.DEPT_NAME, T3.YEARS_NAME " +
+            String sql2 = "SELECT T1.BRIEF_NAME, T2.DEPT_NAME, T3.YEARS_NAME ,T.BUILT_TIME,T.SCALE" +
                     "  FROM ECHARTS.DM_OP_YR_BASE_SCALE T, " +
                     "    ECHARTS.DIM_OP_COMPANY      T1, " +
                     "    ECHARTS.DIM_DEPT_OP         T2, " +
@@ -23,7 +23,7 @@
                     "   AND T3.YEARS_ID = T.OP_YEARS " +
                     "   AND T1.COMPANY_TYPE = " + buId +
                     "   AND T.DATE_ID = " + year +
-                    "order by t3.years_id";
+                    "order by t3.years_id,t.built_time";
             Map<String, Object> dataMap = new HashMap<String, Object>();
             List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
             ResultSet rs2 = dbOperation.executeQuery(sql2);
@@ -34,6 +34,8 @@
                     map.put("companyName", rs2.getString(1));
                     map.put("deptName", rs2.getString(2));
                     map.put("opYears", rs2.getString(3));
+                    map.put("opDate", rs2.getString(4));
+                    map.put("scale", rs2.getString(5));
                     list.add(map);
                 }
             }

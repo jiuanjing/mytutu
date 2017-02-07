@@ -37,7 +37,7 @@
             List<Double> list2 = new ArrayList<Double>();
             List<Double> list3 = new ArrayList<Double>();
             for (int i = 0; i < sqlList.size(); i++) {
-                //System.out.println(sqlList.get(i));
+//                System.out.println(sqlList.get(i));
                 ResultSet rs = null;
                 rs = db.executeQuery(sqlList.get(i));//通过数据库访问程序返回一个可滚动的记录集
                 if (rs == null) {

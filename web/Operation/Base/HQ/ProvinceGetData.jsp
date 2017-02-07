@@ -18,7 +18,7 @@
                     "sum(d.quantity) company_count,  " +
                     "sum(d.scale) scale,  " +
                     "sum(d.factory_count) factory_count,  " +
-                    "sum(d.invest_amount) invest_amount,  " +
+                    "round(sum(d.invest_amount/10000),2) invest_amount,  " +
                     "sum(d.heads_count) heads_count    " +
                     "from ECHARTS.dim_city a,ECHARTS.dim_region b,ECHARTS.dim_op_company c," +
                     "ECHARTS.dm_op_yr_base_scale d   " +

@@ -12,7 +12,7 @@
 <script src="../../scripts/echarts.js"></script>
 <link rel="stylesheet" type="text/css" href="../../css/condition-table.css"/>
 <!-- 设置时间 -->
-<script src="../../scripts/MyScripts_FN.js"></script>
+<script src="../../scripts/MyScripts_FN1.js"></script>
 <link rel="stylesheet" type="text/css" href="../../scripts/easyui-1.3.6/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="../../scripts/easyui-1.3.6/themes/icon.css">
 <script type="text/javascript" src="../../scripts/easyui-lang-zh_CN.js"></script>
@@ -114,7 +114,7 @@
             data: {
                 ModuleName: $('#ModuleName').val(), //用于onchange方法名称
                 DeptID: $('#DeptID').val(),   //0表示无管辖部门，1表示投运一部，2表示投运二部，部门ID
-                RegionID: $('#RegionID').val()
+                RegionID: $('#RegionID').val(),isDisplay:1
 
             },
             error: function (msg) { //若Ajax处理失败后返回的信息

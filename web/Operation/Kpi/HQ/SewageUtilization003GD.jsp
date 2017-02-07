@@ -32,7 +32,7 @@
             sqlList.add(sqlstr1);
             sqlList.add(sqlstr2);
             sqlList.add(sqlstr3);
-
+//            System.out.println(sqlstr2);
             Gson gson = new Gson();
             List<Object> list0 = new ArrayList<Object>();
             Map<String, Object> map1 = new HashMap<String, Object>();//产能利用率同期值

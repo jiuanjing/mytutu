@@ -9,7 +9,12 @@ $(document).ready(function () {
         var date = new Date();
         var y = date.getFullYear();
         var m = date.getMonth();
-        return y + "-" + (m < 10 ? "0" + m : m);
+        if (m == 0) {
+            m=12;
+            y--;
+        }
+        if (m > 0 && m < 10) m = "0" + m;
+        return y + "-" + m;
     };
     //时间格式yyyy-MM, 财务合并报表在4日以后完成，所以月度 在4日之前 为上上月，4日后 为上月。
     Date.prototype.getLastMonthAfter4 = function () {
@@ -17,6 +22,10 @@ $(document).ready(function () {
         var d = date.getDate();
         var y = date.getFullYear();
         var m = date.getMonth();
+        if (m == 0) {
+            m=12;
+            y--;
+        }
         if (d <= 4) {
             m = m - 1;
         }
@@ -28,6 +37,10 @@ $(document).ready(function () {
         var d = date.getDate();
         var y = date.getFullYear();
         var m = date.getMonth();
+        if (m == 0) {
+            m=12;
+            y--;
+        }
         if (d <= 4) {
             m = m - 1;
         }
@@ -38,6 +51,10 @@ $(document).ready(function () {
         var date = new Date();
         var y = date.getFullYear() - 1;
         var m = date.getMonth();
+        if (m == 0) {
+            m=12;
+            y--;
+        }
         return y + "-" + (m < 10 ? "0" + m : m);
     };
     //时间格式yyyy-MM,去年,月度在-1
@@ -45,6 +62,10 @@ $(document).ready(function () {
         var date = new Date();
         var y = date.getFullYear() - 1;
         var m = date.getMonth();
+        if (m == 0) {
+            m=12;
+            y--;
+        }
         return y + "-" + (m < 10 ? "0" + m : m);
     };
     //时间格式yyyy-MM,去年一月度

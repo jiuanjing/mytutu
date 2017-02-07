@@ -42,7 +42,7 @@
             }
             if ("2".equals(types)) data = "SUM(T.Quantity)";
             if ("3".equals(types)) data = "trunc(SUM(T.SCALE)/SUM(T.Quantity),2)";
-            if ("5".equals(types)) data = "SUM(T.invest_amount)";
+            if ("5".equals(types)) data = "round(SUM(T.invest_amount)/10000,2)";
 
             String sql = "SELECT V1.DATE_ID, NVL(SCALE, 0), V1.BU_ID, V1.TYPE_NAME " +
                     "  FROM (SELECT DATE_ID, BU_ID, T2.TYPE_NAME " +

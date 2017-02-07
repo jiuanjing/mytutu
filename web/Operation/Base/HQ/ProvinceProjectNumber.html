@@ -23,7 +23,8 @@
         font-weight: bold;
         text-align: center;
     }
-    .panel{
+
+    .panel {
         text-align: center;
     }
 </style>
@@ -143,8 +144,14 @@
                                 }
                             ]
                         };
+
                         var ecConfig = require('echarts/config');
-                        var zrEvent = require('zrender/tool/event');
+                        myChart.on('click', function (params) {
+                            var city = params.name;
+                            city = encodeURIComponent(city);
+                            window.self.location.href = '../Company/CompanyAnalysisForRegion.html?mt=' + city
+                            +'@@'+mt;
+                        });
                         myChart.setOption(option);
                         window.onresize = myChart.resize;
                     }
@@ -248,6 +255,12 @@
                             ]
                         };
                         var ecConfig = require('echarts/config');
+                        myChart.on('click', function (params) {
+                            var city = params.name;
+                            city = encodeURIComponent(city);
+                            window.self.location.href = '../Company/CompanyAnalysisForRegion.html?mt=' + city
+                                +'@@'+mt;
+                        });
                         var zrEvent = require('zrender/tool/event');
                         myChart.setOption(option);
                         window.onresize = myChart.resize;
@@ -282,7 +295,7 @@
                         var option = {
                             title: {
                                 text: city + '投资额区域分析',
-                                subtext: '单位:万元',
+                                subtext: '单位:亿元',
                                 x: 'center',
                                 y: '1'
                             },
@@ -295,7 +308,7 @@
                                         res += myseries[i].name;
                                         for (var j = 0; j < myseries[i].data.length; j++) {
                                             if (myseries[i].data[j].name == params.name) {
-                                                res += ' : ' + myseries[i].data[j].value + '万元</br>';
+                                                res += ' : ' + myseries[i].data[j].value + '亿元</br>';
                                             }
                                         }
                                     }
@@ -309,12 +322,12 @@
                             },
                             dataRange: {
                                 splitList: [
-                                    {start: 50000},
-                                    {start: 40000, end: 50000},
-                                    {start: 30000, end: 40000},
-                                    {start: 20000, end: 30000},
-                                    {start: 10000, end: 20000},
-                                    {end: 10000}
+                                    {start: 5},
+                                    {start: 4, end: 5},
+                                    {start: 3, end: 4},
+                                    {start: 2, end: 3},
+                                    {start: 1, end: 2},
+                                    {end: 1}
                                 ],
                                 color: ['#191970', '#0000CD', '#4169E1', '#00BFFF', '#87CEFA', '#ADD8E6']
                             },
@@ -349,6 +362,12 @@
                             ]
                         };
                         var ecConfig = require('echarts/config');
+                        myChart.on('click', function (params) {
+                            var city = params.name;
+                            city = encodeURIComponent(city);
+                            window.self.location.href = '../Company/CompanyAnalysisForRegion.html?mt=' + city
+                                +'@@'+mt;
+                        });
                         var zrEvent = require('zrender/tool/event');
                         myChart.setOption(option);
                         window.onresize = myChart.resize;
@@ -364,7 +383,7 @@
     function getDataGrid() {
         $('.tg').datagrid({
             url: "RegionDiv2.jsp",
-            title: decodeURIComponent(mt)+'项目公司统计',
+            title: decodeURIComponent(mt) + '项目公司统计',
             method: 'post',
             singleSelect: true,
             nowrap: true,
@@ -382,8 +401,10 @@
                     field: 'kpiType',
                     title: '指标类型',
                     align: 'center',
-                    width: 50
-
+                    width: 50,
+                    styler: function (value, row, index) {
+                        return 'color:blue;';
+                    }
                 },
                 {
                     field: 'kpiName',

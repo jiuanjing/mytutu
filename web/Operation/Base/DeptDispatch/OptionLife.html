@@ -23,7 +23,6 @@
         var params = url.split("?")[1];
         var buId = params.split("=")[1];
         var type;
-        console.log(buId);
         if (buId == 1) {
             type = '供水板块';
         } else if (buId == 2) {
@@ -47,24 +46,40 @@
             striped: true,
             queryParams: {
                 year: $('#year').combobox('getValue'),
-                buId: 1
+                buId: buId
             },
             loadMsg: '正在加载数据，请稍等......',
             columns: [[
                 {
                     field: 'deptName',
                     title: '大区名称',
-                    align: 'center'
+                    align: 'center',
+                    width:40
                 },
                 {
                     field: 'companyName',
                     title: '公司名称',
-                    align: 'center'
+                    align: 'center',
+                    width:40
                 },
                 {
                     field: 'opYears',
                     title: '运营年限',
-                    align: 'right'
+                    align: 'right',
+                    width:30
+                },{
+                    field: 'opDate',
+                    title: '运营时间',
+                    align: 'right',
+                    width:40,
+                    formatter:function (val) {
+                        return val.substr(0,4)+'年'+val.substr(5,2)+'月'
+                    }
+                },{
+                    field: 'scale',
+                    title: '处理规模(万吨/天)',
+                    align: 'right',
+                    width:20
                 }]]
         });
     }
@@ -105,6 +120,9 @@
     </table>
 </div>
 <hr class="Main_hr" align="center" width="95%"/>
-<table id="main" style="width: 270px;"></table>
+<div style="margin-left: 100px;margin-right: 100px">
+    <table id="main"></table>
+</div>
+
 </body>
 </html>

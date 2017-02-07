@@ -26,7 +26,7 @@
             where += " and t.report_date =" + date;
             where += " and t.company_id =" + CompanyID;
             sqlstr += where;
-            //System.out.println(sqlstr);
+//            System.out.println(sqlstr);
             int re = 0;
             re = db.executeUpdate(sqlstr);
             db.executeCommit();//提交事务

@@ -23,8 +23,8 @@
             }
             column = column.substring(0, column.length() - 1).trim();
 
-            String sqlstr1 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=" + DeptID + " and t.kpi_code_num=2052 and t.date_id = " + year;//同期产能利用率
-            String sqlstr2 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=" + DeptID + " and t.kpi_code_num=2052 and t.date_id = " + (year - 1);//实际产能利用率
+            String sqlstr1 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=" + DeptID + " and t.kpi_code_num=2052 and t.date_id = " + (year-1);//同期产能利用率
+            String sqlstr2 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=" + DeptID + " and t.kpi_code_num=2052 and t.date_id = " + year;//实际产能利用率
             String sqlstr3 = "select " + column + " from echarts.dm_op_mr_kpi_budget_sum t where t.sum_id=" + DeptID + " and t.kpi_code_num=2052 and t.date_id = " + (year - 1);//计划产能利用率
 
             List<String> sqlList = new ArrayList<String>();

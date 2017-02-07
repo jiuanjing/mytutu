@@ -4,41 +4,89 @@
  * 用于财务主题，创建时间函数，还有公司名称模糊查询dim_company_fn
  * 合并报表在15日以后完成，所以月度 在15日之前 为上上月，15日后 为上月。
  */
+
+/**
+ * 2016-12-23
+ */
 $(document).ready(function () {
-    var Nowdate = new Date();
-    var nowYear = Nowdate.getYear() + 1900;
-    var preYear = Nowdate.getYear() + 1900 - 1;
 
-    var month = Nowdate.getMonth() + 1; //当月
-    var _month = month - 1;//上个月
-    var _month2 = month - 2;//上上个月
+    var date = new Date();
+    var nowYear = date.getFullYear();
+    var preYear = nowYear - 1;
+    //上月
+    var preMonth = date.getMonth();
+    //上上月
+    var monthBefore = date.getMonth() - 1;
+    //今日
+    var nowDay = date.getDate();
+    //如果4号之前，应取上上月的值；4号后取上月的值
+    if (nowDay < 4) {
+        if (monthBefore < 10 && monthBefore > 0) {
+            monthBefore = '0' + monthBefore;
+        } else if (monthBefore = 0) {
+            nowYear--;
+            monthBefore = 12;
+        } else if (monthBefore = -1) {
+            nowYear--;
+            monthBefore = 11;
+        }
+        //设置开始日期
+        $("#begin_date").datebox("setValue", preYear + '-01');
+        //设置结束日期
+        $("#end_date").datebox("setValue", nowYear + '-' + monthBefore);
+        //设置单个日期
+        $("#date").datebox("setValue", nowYear + '-' + monthBefore);
 
-    var today = Nowdate.getDate(); //当前日
-
-    var nowMonth = month < 10 ? "0" + month : month; //当月
-    var preMonth = _month < 10 && _month > 0 ? "0" + _month : _month; //上个月
-    var preMonth2 = _month2 < 10 && _month2 > 0 ? "0" + _month2 : _month2; //上上个月
-    if (preMonth == 0) {
-        nowYear = nowYear - 1;
-        preMonth = "12";
+    } else {
+        if (preMonth < 10 && preMonth > 0) {
+            preMonth = '0' + preMonth;
+        } else if (preMonth == 0) {
+            nowYear--;
+            preMonth = 12;
+        }
+        //设置开始日期
+        $("#begin_date").datebox("setValue", preYear + '-01');
+        //设置结束日期
+        $("#end_date").datebox("setValue", nowYear + '-' + preMonth);
+        //设置单个日期
+        $("#date").datebox("setValue", nowYear + '-' + preMonth);
     }
-    if (preMonth2 == -1) {
-        preMonth2 = "11";
-    } else if (preMonth2 == 0) {
-        nowYear = nowYear - 1;
-        preMonth2 = "12";
-    }
 
-    if (today <= 3) {
-        preMonth = preMonth2;
-    }
 
-    //设置开始日期
-    $("#begin_date").datebox("setValue", preYear + '-01');
-    //设置结束日期
-    $("#end_date").datebox("setValue", nowYear + '-' + preMonth);
-    //设置单个日期
-    $("#date").datebox("setValue", nowYear + '-' + preMonth);
+    // var Nowdate = new Date();
+    // var nowYear = Nowdate.getYear() + 1900;
+    // var preYear = Nowdate.getYear() + 1900 - 1;
+    //
+    // var month = Nowdate.getMonth() + 1; //当月
+    // var _month = month - 1;//上个月
+    // var _month2 = month - 2;//上上个月
+    //
+    // var today = Nowdate.getDate(); //当前日
+    //
+    // var nowMonth = month < 10 ? "0" + month : month; //当月
+    // var preMonth = _month < 10 && _month > 0 ? "0" + _month : _month; //上个月
+    // var preMonth2 = _month2 < 10 && _month2 > 0 ? "0" + _month2 : _month2; //上上个月
+    // if (preMonth == 0) {
+    //     nowYear = nowYear - 1;
+    //     preMonth = "12";
+    // }
+    // if (preMonth2 == -1) {
+    //     preMonth2 = "11";
+    // } else if (preMonth2 == 0) {
+    //     nowYear = nowYear - 1;
+    //     preMonth2 = "12";
+    // }
+    //
+    // if (today <= 3) {
+    //     preMonth = preMonth2;
+    // }
+    //
+    // //设置开始日期
+    // $("#begin_date").datebox("setValue", preYear + '-01');
+    // //设置结束日期
+    // $("#end_date").datebox("setValue", nowYear + '-' + preMonth);
+    // //设置单个日期
+    // $("#date").datebox("setValue", nowYear + '-' + preMonth);
 
     //使echarts自适应页面高度
     var h = $(window).height() - 60;
@@ -65,7 +113,8 @@ $(document).ready(function () {
 function aotoCompanyName() {
     jQuery.post("../../common/AutoCompanyList.jsp",
         {
-            tableName: "dim_company_fn"
+            tableName: "dim_company_fn",
+            isDisplay: '1'
         },
         function (data) {
             var list = eval(data);

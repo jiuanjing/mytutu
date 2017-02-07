@@ -61,7 +61,7 @@
             sqlstr = "select t.brief_name,t.asset_liability_ratio from (select * from " + tableName + " a,echarts.dim_company_fn b where a.company_id = b.company_id";
 
             sqlstr = sqlstr + where + " and B.FLAG_DISPLAY = 1 and b.status=1 and b.company_level=2 order by a." + sort + " " + order + ") t where rownum<=10";
-            //System.out.println(sqlstr);
+//            System.out.println(sqlstr);
             ResultSet rs = null;
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集
 

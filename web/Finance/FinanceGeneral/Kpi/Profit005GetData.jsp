@@ -56,13 +56,13 @@
                 }
             }
 
-            sqlstr = "select c.bu_name,round(sum(a.PROFIT_CW)/10000,2) from " +
+            sqlstr = "select c.bu_name,nvl(round(sum(a.PROFIT_CW)/10000,2),0) from " +
                     tableName + " a ,echarts.dim_company_fn b,echarts.dim_bu c "
                     + "where a.company_id = b.company_id and B.FLAG_DISPLAY = 1 and b.bu_id = c.bu_id and a.company_id > 2";
 
             sqlstr = sqlstr + where + " and b.status=1 and b.company_level = 2 and c.status=1 and " +
                     "c.analysis_flag = 1 group by c.bu_name order by sum(a.PROFIT_CW) desc";
-            //System.out.println(sqlstr);
+            System.out.println(sqlstr);
             ResultSet rs = null;
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集
             if (rs == null) {

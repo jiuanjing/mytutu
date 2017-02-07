@@ -119,7 +119,8 @@
             type: "post", //传参方式，get 或post
             data: {
                 DeptID: $('#DeptID').val(),   //0表示无管辖部门，1表示投运一部，2表示投运二部，部门ID
-                RegionID: $('#RegionID').val()
+                RegionID: $('#RegionID').val(),
+
             },
             error: function (msg) { //若Ajax处理失败后返回的信息
                 alert("Ajax获取数据失败");

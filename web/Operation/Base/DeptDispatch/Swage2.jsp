@@ -1,7 +1,6 @@
 <%@ page import="com.bws.dbOperation.DBOperation" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%--
@@ -27,25 +26,21 @@
                     "   AND T.DATE_ID =" + year +
                     "   AND T2.DEPT_ID =" + dept +
                     " GROUP BY T3.TYPE_ID, T3.TYPE_NAME";
-            try {
-                ResultSet resultSet = db.executeQuery(sql);
+            ResultSet resultSet = db.executeQuery(sql);
 
-                if (resultSet != null) {
-                    List<List<Object>> lists = new ArrayList<List<Object>>();
-                    while (resultSet.next()) {
-                        List<Object> list1 = new ArrayList<Object>();
-                        list1.add(resultSet.getInt(2));
-                        list1.add(resultSet.getInt(3));
-                        list1.add(resultSet.getInt(3) / resultSet.getInt(2));
-                        list1.add(resultSet.getString(1));
-                        lists.add(list1);
-                    }
-                    Gson gson = new Gson();
-                    String returnData = gson.toJson(lists);
-                    out.write(returnData);
+            if (resultSet != null) {
+                List<List<Object>> lists = new ArrayList<List<Object>>();
+                while (resultSet.next()) {
+                    List<Object> list1 = new ArrayList<Object>();
+                    list1.add(resultSet.getInt(2));
+                    list1.add(resultSet.getInt(3));
+                    list1.add(resultSet.getInt(3) / resultSet.getInt(2));
+                    list1.add(resultSet.getString(1));
+                    lists.add(list1);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                Gson gson = new Gson();
+                String returnData = gson.toJson(lists);
+                out.write(returnData);
             }
         } catch (Exception e) {
             e.printStackTrace();

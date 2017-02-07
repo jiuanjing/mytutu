@@ -81,8 +81,8 @@
                                 },
                                 tooltip: {
                                     trigger: 'axis',
-                                    formatter: '{b}年 '+dept+'<br/>{a}:{c}万元<br/>{a1}:{c1}万元<br/>{a2}:{c2}万元' +
-                                    '<br/>{a3}:{c3}万元<br/>{a4}:{c4}万元',
+                                    formatter: '{b}年 '+dept+'<br/>{a4}:{c4}亿元<br/>{a3}:{c3}亿元<br/>{a2}:{c2}亿元' +
+                                    '<br/>{a1}:{c1}亿元<br/>{a}:{c}亿元',
                                     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                                         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                                     }
@@ -118,7 +118,7 @@
                                 yAxis: [
                                     {
                                         type: 'value',
-                                        name: '金额(万元)'
+                                        name: '金额(亿元)'
                                     },
                                     {
                                         type: 'value',
@@ -155,7 +155,33 @@
                                         name: '海水淡化',
                                         type: 'bar',
                                         stack: '规模数量',
-                                        data:  return_data.data.slice(4 * len, 5 * len)
+                                        data:  return_data.data.slice(4 * len, 5 * len),
+                                        itemStyle:{
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top',
+                                                    formatter: function (params) {
+                                                        //计算汇总值
+                                                        var name = params.name;
+                                                        var index;  //x轴序列顺序
+                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
+                                                            if (name == option.xAxis[0].data[i]) {
+                                                                index = i;
+                                                                break;
+                                                            }
+                                                        }
+                                                        var total = 0;
+                                                        for (var i = 0; i < option.series.length; i++) {
+                                                            if (option.series[i].stack == params.series.stack) {
+                                                                total += parseFloat(option.series[i].data[index]);
+                                                            }
+                                                        }
+                                                        return total.toFixed(2);
+                                                    }
+                                                }
+                                            }
+                                        }
                                     },
                                     {
                                         name: '总规模年增长率',

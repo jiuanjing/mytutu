@@ -14,7 +14,7 @@
                     "    SUM(C.QUANTITY) COMPANY_COUNT, " +
                     "    SUM(C.SCALE) SCALE, " +
                     "    SUM(C.FACTORY_COUNT) FACTORY_COUNT, " +
-                    "    SUM(C.INVEST_AMOUNT) INVEST_AMOUNT, " +
+                    "    round(SUM(C.INVEST_AMOUNT/10000),2) INVEST_AMOUNT, " +
                     "    SUM(C.HEADS_COUNT) HEADS_COUNT " +
                     "  FROM ECHARTS.DIM_REGION A, ECHARTS.DIM_OP_COMPANY B, ECHARTS.DM_OP_YR_BASE_SCALE C " +
                     " WHERE A.REGION_ID = B.REGION_ID " +

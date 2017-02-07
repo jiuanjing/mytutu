@@ -60,7 +60,6 @@
             //同期的上个月年累计收入
             String sql5 = "select round(OPERATING_REVENUE_TY/10000,0) from echarts.dm_operating_growth " +
                     "where company_id=1 and date_id = " + ly01;
-
             sqlList.add(sql1);
             sqlList.add(sql2);
             sqlList.add(sql3);
@@ -89,7 +88,7 @@
             DecimalFormat df = new DecimalFormat("#,###");
             if (!(date.equals("")) && date.substring(5, 7).equals("01")) {
                 //一月度本期值就为一月度值
-                listData2.add(listData.get(0));
+                listData2.add(df.format(Double.parseDouble(listData.get(0))));
                 //上个月值
                 if (!(listData.get(1).equals("-")) && !(listData.get(2).equals("-"))) {
                     String preData = (Integer.parseInt(listData.get(1)) - Integer.parseInt(listData.get(2))) + "";

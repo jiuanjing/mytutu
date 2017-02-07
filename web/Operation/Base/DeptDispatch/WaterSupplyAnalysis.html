@@ -64,6 +64,16 @@
                                     fontSize: 14
                                 }
                             },
+                            legend: {
+                                y:30,
+                                data: (function () {
+                                    var a = [];
+                                    for (var i = 0; i < return_data.length; i++) {
+                                        a.push(return_data[i][3]);
+                                    }
+                                    return a;
+                                })()
+                            },
                             tooltip: {
                                 trigger: 'axis',//触发器
                                 showDelay: 0,//显示延迟
@@ -80,7 +90,6 @@
                                 show: true,
                                 feature: {
                                     mark: {show: true},
-
                                     dataView: {show: true, readOnly: false},
                                     restore: {show: true},
                                     saveAsImage: {show: true}
@@ -101,29 +110,31 @@
                                     splitNumber: 10,
                                     scale: false
                                 }
-                            ],
-                            series: [
-                                {
-                                    name: '数量',
-                                    type: 'scatter',
-                                    tooltip: {
-                                        trigger: 'item',
-                                        formatter: function (params) {
-                                            return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
-                                                + '平均规模：' + params.value[2] + '万吨/个<br/>'
-                                                + '规模：' + params.value[1] + '万吨<br/>';
-                                        },
-                                        axisPointer: {
-                                            show: true
-                                        }
-                                    },
-                                    symbolSize: function (value) {
-                                        return (value[2] * 2);
-                                    },
-                                    data: return_data
-                                }
                             ]
                         };
+                        var series = [];
+                        for (var i =0;i<return_data.length;i++){
+                            var inData = {};
+                            inData.name = return_data[i][3];
+                            inData.type = 'scatter';
+                            inData.tooltip = {
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
+                                        + '平均规模：' + params.value[2] + '万吨/个<br/>'
+                                        + '规模：' + params.value[1] + '万吨<br/>';
+                                },
+                                axisPointer: {
+                                    show: true
+                                }
+                            };
+                            inData.symbolSize=function (value) {
+                                return (value[2] *1.2);
+                            };
+                            inData.data = [return_data[i]];
+                            series.push(inData);
+                        }
+                        option.series=series;
                         myChart.setOption(option);
                     }
                 );

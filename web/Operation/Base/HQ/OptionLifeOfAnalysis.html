@@ -145,71 +145,29 @@
                                     type: 'value',
                                     name: '项目数量(个)'
                                 }
-                            ],
-                            series: [
-                                {
-                                    name: '0年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[0]
-                                },
-                                {
-                                    name: '0-5年',
-                                    type: 'bar', itemStyle: {
-                                    normal: {
-                                        label: {
-                                            show: true,
-                                            position: 'top',
-                                            formatter: function (params) {
-                                                if (params.data != 0) return params.data;
-                                            }
-                                        }
-                                    }
-                                },
-                                    data: data[1]
-                                },
-                                {
-                                    name: '5-10年',
-                                    type: 'bar', itemStyle: {
-                                    normal: {
-                                        label: {
-                                            show: true,
-                                            position: 'top',
-                                            formatter: function (params) {
-                                                if (params.data != 0) return params.data;
-                                            }
-                                        }
-                                    }
-                                },
-                                    data: data[2]
-                                },
-                                {
-                                    name: '10年以上',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true, position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[3]
-                                }
                             ]
+
                         };
+                        var series = [];
+                        for (var i = 0;i<data.length;i++){
+                            var mySeries = {};
+                            mySeries.name = rdata.type[i];
+                            mySeries.type='bar';
+                            mySeries.itemStyle = {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        formatter: function (params) {
+                                            if (params.data != 0) return params.data;
+                                        }
+                                    }
+                                }
+                            };
+                            mySeries.data = data[i];
+                            series.push(mySeries);
+                        }
+                        option.series = series;
                         var ecConfig = require('echarts/config');
                         myChart.on(ecConfig.EVENT.CLICK, function () {
                             window.location = "../DeptDispatch/OptionLife.html?id=1";
@@ -290,71 +248,28 @@
                                     type: 'value',
                                     name: '项目数量(个)'
                                 }
-                            ],
-                            series: [
-                                {
-                                    name: '0年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true, position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[0]
-                                },
-                                {
-                                    name: '0-5年',
-                                    type: 'bar', itemStyle: {
-                                    normal: {
-                                        label: {
-                                            show: true, position: 'top',
-                                            formatter: function (params) {
-                                                if (params.data != 0) return params.data;
-                                            }
-                                        }
-                                    }
-                                },
-                                    data: data[1]
-                                },
-                                {
-                                    name: '5-10年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[2]
-                                },
-                                {
-                                    name: '10年以上',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[3]
-                                }
                             ]
                         };
+                        var series = [];
+                        for (var i = 0;i<data.length;i++){
+                            var mySeries = {};
+                            mySeries.name = rdata.type[i];
+                            mySeries.type='bar';
+                            mySeries.itemStyle = {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        formatter: function (params) {
+                                            if (params.data != 0) return params.data;
+                                        }
+                                    }
+                                }
+                            };
+                            mySeries.data = data[i];
+                            series.push(mySeries);
+                        }
+                        option.series = series;
                         var ecConfig = require('echarts/config');
                         myChart.on(ecConfig.EVENT.CLICK, function () {
                             window.location = "../DeptDispatch/OptionLife.html?id=2";
@@ -434,74 +349,29 @@
                                     type: 'value',
                                     name: '项目数量(个)'
                                 }
-                            ],
-                            series: [
-                                {
-                                    name: '0年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[0]
-                                },
-                                {
-                                    name: '0-5年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[1]
-                                },
-                                {
-                                    name: '5-10年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[2]
-                                },
-                                {
-                                    name: '10年以上',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[3]
-                                }
                             ]
+
                         };
+                        var series = [];
+                        for (var i = 0;i<data.length;i++){
+                            var mySeries = {};
+                            mySeries.name = rdata.type[i];
+                            mySeries.type='bar';
+                            mySeries.itemStyle = {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        formatter: function (params) {
+                                            if (params.data != 0) return params.data;
+                                        }
+                                    }
+                                }
+                            };
+                            mySeries.data = data[i];
+                            series.push(mySeries);
+                        }
+                        option.series = series;
                         var ecConfig = require('echarts/config');
                         myChart.on(ecConfig.EVENT.CLICK, function () {
                             window.location = "../DeptDispatch/OptionLife.html?id=4";
@@ -581,75 +451,28 @@
                                     type: 'value',
                                     name: '项目数量(个)'
                                 }
-                            ],
-                            series: [
-                                {
-                                    name: '0年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[0]
-                                },
-                                {
-                                    name: '0-5年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[1]
-                                },
-                                {
-                                    name: '5-10年',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[2]
-                                },
-                                {
-                                    name: '10年以上',
-                                    type: 'bar',
-                                    itemStyle: {
-                                        normal: {
-                                            label: {
-                                                show: true,
-                                                position: 'top',
-                                                formatter: function (params) {
-                                                    if (params.data != 0) return params.data;
-                                                }
-                                            }
-                                        }
-                                    },
-                                    data: data[3]
-                                }
                             ]
                         };
-
+                        var series = [];
+                        for (var i = 0;i<data.length;i++){
+                            var mySeries = {};
+                            mySeries.name = rdata.type[i];
+                            mySeries.type='bar';
+                            mySeries.itemStyle = {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        formatter: function (params) {
+                                            if (params.data != 0) return params.data;
+                                        }
+                                    }
+                                }
+                            };
+                            mySeries.data = data[i];
+                            series.push(mySeries);
+                        }
+                        option.series = series;
                         var ecConfig = require('echarts/config');
                         myChart.on(ecConfig.EVENT.CLICK, function () {
                             window.location = "../DeptDispatch/OptionLife.html?id=5";

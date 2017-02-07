@@ -27,7 +27,6 @@
             Double d1 = 0D;
             Double d2 = 0D;
             for (int i = 0; i < sqlList.size(); i++) {
-                //System.out.println(sqlList.get(i));
                 ResultSet rs = null;
                 rs = db.executeQuery(sqlList.get(i));//通过数据库访问程序返回一个可滚动的记录集
                 if (rs == null) {

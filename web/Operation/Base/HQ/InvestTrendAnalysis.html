@@ -64,7 +64,7 @@
                                 },
                                 tooltip: {
                                     trigger: 'item',
-                                    formatter: "{a} <br/>{b} : {c}万元 ({d}%)"
+                                    formatter: "{a} <br/>{b} : {c}亿元 ({d}%)"
                                 },
                                 toolbox: {
                                     show: false,
@@ -157,7 +157,7 @@
                                         var res = params[0].name;
                                         for (var i = 0, l = params.length; i < l; i++) {
                                             if (params[i].seriesIndex == "0" || params[i].seriesIndex == "1" || params[i].seriesIndex == "2") {
-                                                res += '<br/>' + params[i].seriesName + ' : ' + params[i].value + "万元";
+                                                res += '<br/>' + params[i].seriesName + ' : ' + params[i].value + "亿元";
                                             } else {
                                                 res += '<br/>' + params[i].seriesName + ' : ' + params[i].value + "%";
                                             }
@@ -196,7 +196,7 @@
                                 yAxis: [
                                     {
                                         type: 'value',
-                                        name: '金额(万元)'
+                                        name: '金额(亿元)'
                                     }
                                 ],
                                 series: [

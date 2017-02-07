@@ -22,8 +22,8 @@
             }
             column = column.substring(0, column.length() - 1).trim();
 
-            String sqlstr1 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=0 and t.kpi_code_num=1034 and t.date_id = " + year;//同期产销差率
-            String sqlstr2 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=0 and t.kpi_code_num=1034 and t.date_id = " + (year - 1);//实际产销差率
+            String sqlstr1 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=0 and t.kpi_code_num=1034 and t.date_id = " + (year-1);//同期产销差率
+            String sqlstr2 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=0 and t.kpi_code_num=1034 and t.date_id = " + year;//实际产销差率
             String sqlstr3 = "select " + column + " from echarts.dm_op_mr_kpi_budget_sum t where t.sum_id=0 and t.kpi_code_num=1034 and t.date_id = " + (year - 1);//计划产销差率
 
             List<String> sqlList = new ArrayList<String>();
@@ -37,7 +37,7 @@
             List<Double> list2 = new ArrayList<Double>();
             List<Double> list3 = new ArrayList<Double>();
             for (int i = 0; i < sqlList.size(); i++) {
-                //System.out.println(sqlList.get(i));
+//                System.out.println(sqlList.get(i));
                 ResultSet rs = null;
                 rs = db.executeQuery(sqlList.get(i));//通过数据库访问程序返回一个可滚动的记录集
                 if (rs == null) {

@@ -5,7 +5,8 @@
      **********************************************************************************************************************/
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-         import="java.util.Date,java.util.*,com.google.gson.Gson,java.sql.*,com.bws.dbOperation.*,com.bws.util.*,java.text.DecimalFormat" %>
+         import="com.bws.dbOperation.DBOperation,com.google.gson.Gson,java.sql.ResultSet,java.text.DecimalFormat,java.util.ArrayList,java.util.HashMap,java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%
     //实例化数据库链接
     DBOperation db = new DBOperation(true);
@@ -22,8 +23,8 @@
             }
             column = column.substring(0, column.length() - 1).trim();
 
-            String sqlstr1 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=0 and t.kpi_code_num=1065 and t.date_id = " + year;//同期产能利用率
-            String sqlstr2 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=0 and t.kpi_code_num=1065 and t.date_id = " + (year - 1);//实际产能利用率
+            String sqlstr1 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=0 and t.kpi_code_num=1065 and t.date_id = " + (year - 1);//同期产能利用率
+            String sqlstr2 = "select " + column + " from echarts.dm_op_mr_kpi_actual_sum t where t.sum_id=0 and t.kpi_code_num=1065 and t.date_id = " + (year);//实际产能利用率
             String sqlstr3 = "select " + column + " from echarts.dm_op_mr_kpi_budget_sum t where t.sum_id=0 and t.kpi_code_num=1065 and t.date_id = " + (year - 1);//计划产能利用率
 
             List<String> sqlList = new ArrayList<String>();

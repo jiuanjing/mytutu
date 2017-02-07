@@ -28,7 +28,7 @@
             //每页显示数
             int rows = Integer.valueOf(request.getParameter("rows"));
 
-            sqlstr = "select a.date_id,a.company_id,b.brief_name,a.voucher_no,a.debit_amount,a.credit_amount from echarts.dm_large_cash_payment a,echarts.dim_company_fn b where  a.company_id = b.company_id and B.FLAG_DISPLAY = 1";
+            sqlstr = "select a.date_id,a.company_id,b.brief_name,a.voucher_no,a.debit_amount,a.credit_amount from echarts.dm_large_cash_payment a,echarts.dim_company_fn b where  a.company_id = b.company_id ";
 
             String where = "";
 

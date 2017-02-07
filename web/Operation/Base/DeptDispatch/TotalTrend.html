@@ -56,7 +56,7 @@
 
                             var option = {
                                 title: {
-                                    text: '总规模趋势分析',
+                                    text: $('#dept').find('option:selected').text()+'总规模趋势分析',
                                     x: 'center',
                                     textStyle: {
                                         color: '#1b1b1b',
@@ -80,7 +80,7 @@
                                 },
                                 legend: {
                                     y: 30,
-                                    data:rdata.name.concat(['总增长率']),
+                                    data:rdata.name.concat(['总增长率'])
                                 },
                                 toolbox: {
                                     show: false,
@@ -124,7 +124,6 @@
                                         name: '总增长率(%)'
                                     }
                                 ],
-                                //todo 现在的其实是错误的
                                 series: [
                                     {
                                         name: '供水',
@@ -155,7 +154,33 @@
                                         name: '海水淡化',
                                         type: 'bar',
                                         stack: '规模数量',
-                                        data: rdata.data.slice(4 * len, 5 * len)
+                                        data: rdata.data.slice(4 * len, 5 * len),
+                                        itemStyle:{
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top',
+                                                    formatter: function (params) {
+                                                        //计算汇总值
+                                                        var name = params.name;
+                                                        var index;  //x轴序列顺序
+                                                        for (var i = 0; i < option.xAxis[0].data.length; i++) {
+                                                            if (name == option.xAxis[0].data[i]) {
+                                                                index = i;
+                                                                break;
+                                                            }
+                                                        }
+                                                        var total = 0;
+                                                        for (var i = 0; i < option.series.length; i++) {
+                                                            if (option.series[i].stack == params.series.stack) {
+                                                                total += parseFloat(option.series[i].data[index]);
+                                                            }
+                                                        }
+                                                        return total.toFixed(2);
+                                                    }
+                                                }
+                                            }
+                                        }
                                     },
                                     {
                                         name: '总增长率',

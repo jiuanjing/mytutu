@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css"
           href="../../../css/condition-table.css"/>
     <script src="../../../scripts/echarts.js"></script>
+    <script src="../../../scripts/OpBaseDept.js"></script>
     <title>Insert title here</title>
 </head>
 <script>
@@ -41,7 +42,7 @@
             type: "post", //传参方式，get 或post
             data: {
                 type: 11,
-                dept: $('#dept').combobox('getValue'),
+                dept: $("#dept").val(),
                 year: $('#year').datebox('getValue')
             },
             error: function (msg) { //若Ajax处理失败后返回的信息
@@ -66,7 +67,7 @@
 
                             var option = {
                                 title: {
-                                    text: $('#dept').combobox('getText')+'污水处理工艺类型分析',
+                                    text: $('#dept').find('option:selected').text()+'污水处理工艺类型分析',
                                     x: 'center',
                                     textStyle: {
                                         color: '#1b1b1b',
@@ -125,7 +126,7 @@
             type: "post", //传参方式，get 或post
             data: {
                 type: 1,
-                dept: $('#dept').combobox('getValue'),
+                dept: $("#dept").val(),
                 year: $('#year').datebox('getValue')
             },
             error: function (msg) { //若Ajax处理失败后返回的信息
@@ -147,7 +148,7 @@
                             var myChart = ec.init(document.getElementById('main2'), 'macarons');
                             var option = {
                                 title: {
-                                    text: $('#dept').combobox('getText')+'工艺类型分析图',
+                                    text: $('#dept').find('option:selected').text()+'工艺类型分析图',
                                     x: 'center',
                                     textStyle: {
                                         color: '#1b1b1b',
@@ -191,27 +192,67 @@
                                     {
                                         name: 'SBR',
                                         type: 'bar',
-                                        data: return_data.data[0]
+                                        data: return_data.data[0],
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top'
+                                                }
+                                            }
+                                        }
                                     },
                                     {
                                         name: '20',
                                         type: 'bar',
-                                        data: return_data.data[1]
+                                        data: return_data.data[1],
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top'
+                                                }
+                                            }
+                                        }
                                     },
                                     {
                                         name: '30',
                                         type: 'bar',
-                                        data: return_data.data[2]
+                                        data: return_data.data[2],
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top'
+                                                }
+                                            }
+                                        }
                                     },
                                     {
                                         name: '40',
                                         type: 'bar',
-                                        data: return_data.data[3]
+                                        data: return_data.data[3],
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top'
+                                                }
+                                            }
+                                        }
                                     },
                                     {
                                         name: '50',
                                         type: 'bar',
-                                        data: return_data.data[4]
+                                        data: return_data.data[4],
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'top'
+                                                }
+                                            }
+                                        }
                                     }
                                 ]
                             };
@@ -237,14 +278,7 @@
             </td>
             <td width="5%"><span style="font-size: 12px;">大区：</span></td>
             <td width="5%">
-                <select name="dept" id="dept" class="easyui-combobox">
-                    <option value="1" selected>东南大区</option>
-                    <option value="2">北方大区</option>
-                    <option value="3">中原大区</option>
-                    <option value="4">北京大区</option>
-                    <option value="5">中南大区</option>
-                    <option value="6">西南大区</option>
-                    <option value="7">浙江环投</option>
+                <select name="dept" id="dept">
                 </select>
             </td>
             <td width="5%"><a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)"

@@ -63,13 +63,23 @@
 
                             var option = {
                                 title: {
-                                    text: '工艺类型规模及项目数量分析',
+                                    text: $('#dept').find('option:selected').text() +'工艺类型规模及项目数量分析',
                                     x: 'center',
                                     textStyle: {
                                         color: '#1b1b1b',
                                         fontWeight: 'bold',
                                         fontSize: 14
                                     }
+                                },
+                                legend: {
+                                    y:30,
+                                    data: (function () {
+                                        var a = [];
+                                        for (var i = 0; i < return_data.length; i++) {
+                                            a.push(return_data[i][3]);
+                                        }
+                                        return a;
+                                    })()
                                 },
                                 tooltip: {
                                     trigger: 'axis',//触发器
@@ -107,29 +117,31 @@
                                         splitNumber: 10,
                                         scale: false
                                     }
-                                ],
-                                series: [
-                                    {
-                                        name: '数量',
-                                        type: 'scatter',
-                                        tooltip: {
-                                            trigger: 'item',
-                                            formatter: function (params) {
-                                                return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
-                                                        + '平均规模：' + params.value[2] + '万吨/个<br/>'
-                                                        + '规模：' + params.value[1] + '万吨<br/>';
-                                            },
-                                            axisPointer: {
-                                                show: true
-                                            }
-                                        },
-                                        symbolSize: function (value) {
-                                            return value[2] *2
-                                        },
-                                        data: return_data
-                                    }
                                 ]
                             };
+                            var series = [];
+                            for (var i =0;i<return_data.length;i++){
+                                var inData = {};
+                                inData.name = return_data[i][3];
+                                inData.type = 'scatter';
+                                inData.tooltip = {
+                                    trigger: 'item',
+                                    formatter: function (params) {
+                                        return params.value[3] + '<br/>' + '项目数量：' + params.value[0] + '个<br/>'
+                                            + '平均规模：' + params.value[2] + '万吨/个<br/>'
+                                            + '规模：' + params.value[1] + '万吨<br/>';
+                                    },
+                                    axisPointer: {
+                                        show: true
+                                    }
+                                };
+                                inData.symbolSize=function (value) {
+                                    return (value[2] *2);
+                                };
+                                inData.data = [return_data[i]];
+                                series.push(inData);
+                            }
+                            option.series=series;
                             myChart.setOption(option);
                         }
                 );

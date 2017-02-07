@@ -6,17 +6,28 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="userInfo" class="com.bws.util.UserInfo" scope="session"/>
 <%
     DBOperation dbOperation = new DBOperation(true);
     if (dbOperation.dbOpen()) {
         try {
+            String sql = "";
+            int deptId = userInfo.getDeptIDOp();
+            if (deptId == 0) {
+                sql = "SELECT T.DEPT_ID, T.DEPT_NAME FROM ECHARTS.DIM_DEPT_OP T" +
+                        " order by t.dept_id";
+                deptId = 1;
+            } else {
+                sql = "SELECT T.DEPT_ID, T.DEPT_NAME FROM ECHARTS.DIM_DEPT_OP T" +
+                        " where t.dept_id = " + deptId + " order by t.dept_id";
+            }
+
             List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-            String sql = "SELECT T.DEPT_ID, T.DEPT_NAME FROM ECHARTS.DIM_DEPT_OP T" +
-                    " order by t.dept_id";
+
             ResultSet resultSet = dbOperation.executeQuery(sql);
             while (resultSet.next()) {
                 Map<String, Object> map = new HashMap<String, Object>();
-                if ("1".endsWith(resultSet.getString(1))) {
+                if (String.valueOf(deptId).endsWith(resultSet.getString(1))) {
                     map.put("id", resultSet.getString(1));
                     map.put("text", resultSet.getString(2));
                     map.put("selected", true);

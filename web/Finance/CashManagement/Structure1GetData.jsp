@@ -62,7 +62,7 @@
             }
             sqlstr = "select c.dept_name,round(sum(a." + target + ")/10000,2) from echarts."
                     + tableName + " a ,echarts.dim_company_fn b,echarts.dim_dept c "
-                    + "where a.company_id = b.company_id and B.FLAG_DISPLAY = 1 and  b.dept_id = c.dept_id and a.company_id > 2 ";
+                    + "where a.company_id = b.company_id  and  b.dept_id = c.dept_id and a.company_id > 2 ";
 
             sqlstr = sqlstr + where + " and b.status=1 and b.company_level=2 and c.status=1 group by c.dept_name";
             //System.out.println(sqlstr);

@@ -32,13 +32,11 @@ public class DBOperation {
             Context context = new InitialContext();
 //            DataSource ds = (DataSource) context.lookup("cwbi");//本地库
             DataSource ds = (DataSource) context.lookup("cwbi234");//远程数据库
-
             conn = ds.getConnection();
-
             conn.setAutoCommit(AutoCommit);
-        } catch (java.lang.SecurityException e) {
+        } catch (SecurityException e) {
             errLog.writeLog("database Connection:  " + e.toString() + "\r\n");
-        } catch (java.sql.SQLException e) {
+        } catch (SQLException e) {
             Ex = e;
         } catch (Exception e) {
             errLog.writeLog("database Connection:  " + e.toString() + "\r\n");
@@ -193,9 +191,55 @@ public class DBOperation {
     }
 
     //执行数据库查询语句返回向量类型的数据
+    public Vector<Vector<String>> executeQueryVt(String sqlQuery, String username, String password) {
+        Vector<Vector<String>> vRS = new Vector<Vector<String>>();
+        pstmt = null;
+        rs = null;
+        try {
+            if (dbOpen()) {
+                pstmt = conn.prepareStatement(sqlQuery);
+                pstmt.setString(1, username);
+                pstmt.setString(2, password);
+                rs = pstmt.executeQuery();
+                if (!vRS.isEmpty()) vRS.removeAllElements();
+                //Get the ResultSetMetaData. This will be used for the column headings
+                ResultSetMetaData rsmd = rs.getMetaData();
+                //Get the number of columns in the result set
+                int numCols = rsmd.getColumnCount();
+                boolean more = rs.next();
+                while (more) {
+                    //Found=true;
+                    Vector<String> columns = new Vector<String>();
+                    for (int i = 1; i <= numCols; i++) {
+                        String tempStr = rs.getString(i);
+                        if (tempStr == null) tempStr = "";
+                        tempStr = tempStr.trim();
+                        columns.addElement(tempStr);
+                    }
+                    vRS.addElement(columns);
+                    more = rs.next();
+                }
+                rs.close();
+                pstmt.close();
+            } else {
+                errLog.writeLog("未能打开数据库，execquery connection is null \r\n");
+            }
+        } catch (SQLException e) {
+            Ex = e;
+        } catch (Exception ec) {
+            return null;
+        }
+        //如果出错写错误日志，主要用于获取程序调试时和数据分析时的SQL语句执行出错的信息。
+        if (Ex != null) {
+            errLog.writeLog("Program:  " + fileName + "\r\n                       SQL:  " + sqlQuery + "\r\n                       SQL Error Code:  " + String.valueOf(Ex.getErrorCode()) + "\r\n" + "                       SQL Exception:   " + Ex.toString() + "\r\n");
+            return null;
+        }
+        return vRS;
+    }
+
     public Vector<Vector<String>> executeQueryVt(String sqlQuery) {
         Vector<Vector<String>> vRS = new Vector<Vector<String>>();
-        stmt = null;
+        pstmt = null;
         rs = null;
         try {
             if (dbOpen()) {
