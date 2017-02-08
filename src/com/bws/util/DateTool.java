@@ -84,7 +84,7 @@ public class DateTool {
         SimpleDateFormat df = new SimpleDateFormat("yyyyMM");
         int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         Calendar cal = Calendar.getInstance();
-        if (day > 15) {
+        if (day > 4) {
             cal.setTime(date);
             cal.add(Calendar.MONTH, -1);
         } else {

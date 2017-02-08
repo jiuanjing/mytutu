@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta charset="UTF-8">
+    <title>办件量月度统计</title>
+    <script type="text/javascript" src="../../scripts/jquery-1.6.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/jquery-ui.css"/>
+    <script type="text/javascript" src="../../scripts/jquery.easyui.min.js"></script>
+    <script src="../../scripts/echarts.js"></script>
+    <script src="../../scripts/MyDate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/condition-table.css"/>
+    <link rel="stylesheet" type="text/css" href="../../scripts/easyui-1.3.6/themes/icon.css">
+    <style>
+        body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        #main {
+            height: 100%;
+            position: absolute;
+            width: 100%;
+        }
+
+        #title {
+            height: 10%;
+            position: relative;
+            width: 100%;
+        }
+
+        #title {
+            margin-top: 1px;;
+            margin-bottom: 0;
+            font-family: '微软雅黑', '黑体', '宋体', Arial, serif;
+            font-size: 15px;
+            color: #666666;
+            font-weight: bolder;
+            text-align: center;
+        }
+
+        .item {
+            color: white;
+            font-family: 微软雅黑;
+            height: 15px;
+            width: 18px;
+            display: inline-block;
+            float: right;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .selected {
+            background: #1cbaf1;
+        }
+
+    </style>
+    <script type="text/javascript">
+
+
+        $(function () {
+            var width = document.body.clientWidth;
+//            $('#type').css('width', width - 60);
+            showDiv001();
+        });
+        $(window).resize(function () {
+            var width = document.body.clientWidth;
+//            $('#type').css('width', width - 60);
+        });
+        var option = {
+            grid: {
+                x: 60,
+                y: 10,
+                x2: 40,
+                y2: 50
+            },
+            dataZoom: {
+                show: false,
+                orient: 'vertical',
+                start: 100,
+                end: 30
+            },
+            tooltip: {
+                formatter: '{b}<br>{a}:{c}' + '(件)',
+                trigger: 'item'
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'value',
+                    splitNumber: 3,
+                    axisLabel: {
+                        textStyle: {
+                            fontSize: 10,
+                            fontWeight: 'bolder',
+                            color: '#666666'
+                        }
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: true,
+                    axisLabel: {
+                        textStyle: {
+                            fontSize: 10,
+                            fontWeight: 'bolder',
+                            color: '#666666'
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '办件数量',
+                    type: 'bar',
+                    itemStyle: {        // 系列级个性化样式，纵向渐变填充
+                        normal: {
+                            color: function (params) {
+                                var colorList = [
+                                    '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                                    '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                                    '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+                                ];
+                                return colorList[params.dataIndex]
+                            },
+                            label: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '10'
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        };
+
+        function showDiv001() {
+            $.ajax({
+                url: "WFEData.jsp",
+                dataType: "json",
+                type: "post",
+                data: {
+                    type: 1
+                },
+                error: function () {
+                    alert("Ajax获取数据失败");
+                },
+                success: function (return_data) {
+//                    $('#type').text('上月各机构办件量统计');
+                    $('.item').removeClass('selected');
+                    $('#month').addClass('selected');
+                    require.config({
+                        paths: {
+                            echarts: '../../scripts'
+                        }
+                    });
+                    require(
+                        [
+                            'echarts',
+                            'echarts/chart/bar',
+                            'echarts/chart/line'
+                        ],
+                        function (ec, theme) {
+                            var myChart = ec.init(document.getElementById('main'), 'macarons');
+                            option.yAxis[0].data = return_data.name;
+                            option.series[0].data = return_data.data;
+                            myChart.setOption(option);
+                            window.onresize = myChart.resize;
+                        }
+                    );
+                }
+            });
+        }
+        function showDiv002() {
+            $.ajax({
+                url: "WFEData.jsp",
+                dataType: "json",
+                type: "post",
+                data: {
+                    type: 2
+                },
+                error: function () {
+                    alert("Ajax获取数据失败");
+                },
+                success: function (return_data) {
+//                    $('#type').text('本年各机构办件量统计');
+                    $('.item').removeClass('selected');
+                    $('#year').addClass('selected');
+                    require.config({
+                        paths: {
+                            echarts: '../../scripts'
+                        }
+                    });
+                    require(
+                        [
+                            'echarts',
+                            'echarts/chart/bar',
+                            'echarts/chart/line'
+                        ],
+                        function (ec, theme) {
+                            var myChart = ec.init(document.getElementById('main'), 'macarons');
+                            option.yAxis[0].data = return_data.name;
+                            option.series[0].data = return_data.data;
+                            myChart.setOption(option);
+                            window.onresize = myChart.resize;
+                        }
+                    );
+                }
+            });
+        }
+        function showDiv003() {
+            $.ajax({
+                url: "WFEData.jsp",
+                dataType: "json",
+                type: "post",
+                data: {
+                    type: 0
+                },
+                error: function () {
+                    alert("Ajax获取数据失败");
+                },
+                success: function (return_data) {
+//                    $('#type').text('昨日各机构办件量统计');
+                    $('.item').removeClass('selected');
+                    $('#day').addClass('selected');
+                    require.config({
+                        paths: {
+                            echarts: '../../scripts'
+                        }
+                    });
+
+                    require(
+                        [
+                            'echarts',
+                            'echarts/chart/bar',
+                            'echarts/chart/line'
+                        ],
+                        function (ec, theme) {
+                            var myChart = ec.init(document.getElementById('main'), 'macarons');
+                            option.yAxis[0].data = return_data.name;
+                            option.series[0].data = return_data.data;
+                            myChart.setOption(option);
+                            window.onresize = myChart.resize;
+                        }
+                    );
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div id="title">
+    上月各机构办件量统计
+    <div style="height:19px;width:58px;margin:1px;background:#e3e3e3;border-radius:19px;float: right">
+        <div id="year" onclick="showDiv002(this)" class="item" style="margin: 2px 2px 2px 0;">年</div>
+        <div id="month" onclick="showDiv001(this)" class="item" style="margin: 2px 0 2px 0;">月</div>
+        <div id="day" onclick="showDiv003(this)" class="item selected" style="margin: 2px 0 2px 2px;">日</div>
+    </div>
+</div>
+<div id="main">
+</div>
+</body>
+</html>

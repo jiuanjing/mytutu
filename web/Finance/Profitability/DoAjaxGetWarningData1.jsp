@@ -11,7 +11,10 @@
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
          import="com.bws.dbOperation.DBOperation,com.bws.util.DateTool,com.google.gson.Gson,java.sql.ResultSet" %>
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%
     //实例化数据库链接
     DBOperation db = new DBOperation(true);
@@ -27,9 +30,14 @@
             String DeptId = request.getParameter("DeptId");
             //接收排序规则
             String order = request.getParameter("order");
+            String where = "";
+            if (DeptId != null) {
 
-
-            String where = " where a.company_id = b.company_id and b.status=1 and b.flag_display=1";
+                where = " where b.dept_id = " + DeptId
+                        + " and a.company_id = b.company_id and b.status=1 and b.flag_display=1";
+            }else {
+                where = " where  a.company_id = b.company_id and b.status=1 and b.flag_display=1";
+            }
 
             String date_str = DateTool.getPreYear();
             where += " and date_id =" + date_str;
