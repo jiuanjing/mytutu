@@ -8,6 +8,8 @@
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
          import="com.bws.dbOperation.DBOperation,java.sql.ResultSet" %>
+<%@ page import="java.util.List" %>
+<jsp:useBean id="userInfo" class="com.bws.util.UserInfo" scope="session"/>
 <%
     //实例化数据库链接
     //
@@ -16,7 +18,11 @@
     String DeptID = "";   //0表示无管辖部门，1表示投运一部，2表示投运二部，部门ID
     String RegionID = "";
 
+    String companyIds = userInfo.getCompanyIds(userInfo.getUserID(), db);
+
+
     String isDisplay = request.getParameter("isDisplay");
+
     isDisplay = isDisplay == null ? "0" : "1";
     if (request.getParameter("DeptID") != null && !(request.getParameter("DeptID").equals(""))) {
         DeptID = request.getParameter("DeptID");
@@ -43,12 +49,16 @@
                 sqlstr = "select distinct company_id,brief_name from echarts.dim_company_fn where status=1 " +
                         "and flag_display = 1 ";
             }
-            if ("1".equals(isDisplay)){
+            if ("1".equals(isDisplay)) {
                 sqlstr = "select distinct company_id,brief_name from echarts.dim_company_fn where status=1 ";
             }
             sqlstr = sqlstr + " and dept_id=" + DeptID;
             sqlstr = sqlstr + " and region_id=" + RegionID;
+            if (companyIds.length() >3) {
+                sqlstr += " and company_id in " + companyIds;
+            }
             sqlstr = sqlstr + " order by order_no";
+
 
             ResultSet rs = null;
 //            System.out.println(sqlstr);

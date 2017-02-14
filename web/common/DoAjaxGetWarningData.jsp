@@ -11,6 +11,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
          import="com.bws.dbOperation.DBOperation,com.bws.util.DateTool,com.google.gson.Gson,java.sql.ResultSet" %>
 <%@ page import="java.util.*" %>
+<jsp:useBean id="userInfo" class="com.bws.util.UserInfo" scope="session"/>
 <%
     //实例化数据库链接
     DBOperation db = new DBOperation(true);
@@ -65,6 +66,10 @@
                     String date_str = DateTool.getPreYear();
                     where += " and date_id =" + date_str;
                 }
+            }
+            String companyIDs = userInfo.getCompanyIds(userInfo.getUserID(), db);
+            if (companyIDs.length() > 3) {
+                where += " and a.company_id in " + companyIDs;
             }
             if (DeptId != null && !(DeptId.equals(""))) {
                 where += " and b.dept_id =" + DeptId;

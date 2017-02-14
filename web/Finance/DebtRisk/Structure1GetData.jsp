@@ -10,6 +10,7 @@
          import="com.bws.dbOperation.DBOperation,com.bws.util.DateTool,com.google.gson.Gson,java.sql.ResultSet,java.util.ArrayList,java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<jsp:useBean id="userInfo" class="com.bws.util.UserInfo" scope="session"/>
 <%
     //实例化数据库链接
     DBOperation db = new DBOperation(true);
@@ -61,6 +62,10 @@
                     String date_str = DateTool.getPreYear();
                     where += " and date_id =" + date_str;
                 }
+            }
+            String companyIDs = userInfo.getCompanyIds(userInfo.getUserID(), db);
+            if (companyIDs.length() > 3) {
+                where += " and a.company_id in " + companyIDs;
             }
             sqlstr = "select c.dept_name,round(sum(a." + target + ")/10000,2) from " + tableName + " a ,echarts.dim_company_fn b,echarts.dim_dept c "
                     + "where a.company_id = b.company_id and B.FLAG_DISPLAY = 1 and b.dept_id = c.dept_id and a.company_id > 2";

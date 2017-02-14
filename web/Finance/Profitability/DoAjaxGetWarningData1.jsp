@@ -15,9 +15,12 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<jsp:useBean id="userInfo" class="com.bws.util.UserInfo" scope="session"/>
 <%
     //实例化数据库链接
     DBOperation db = new DBOperation(true);
+    String companyIds = userInfo.getCompanyIds(userInfo.getUserID(), db);
+
     //打开数据库链接
     if (db.dbOpen()) {
         try {
@@ -46,8 +49,12 @@
                     tableName + " a,echarts.DIM_COMPANY_FN b";
             String orderBy = " order by a." + target + " " + order;
             sqlstr += where;
+            if (companyIds.length() > 2) {
+                sqlstr += " and a.company_id in " + companyIds;
+            }
             sqlstr += orderBy;
             ResultSet rs = null;
+//            System.out.println(sqlstr);
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集
 
             if (rs == null) {

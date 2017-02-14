@@ -114,7 +114,7 @@
             data: {
                 ModuleName: $('#ModuleName').val(), //用于onchange方法名称
                 DeptID: $('#DeptID').val(),   //0表示无管辖部门，1表示投运一部，2表示投运二部，部门ID
-                RegionID: $('#RegionID').val(),isDisplay:1
+                RegionID: $('#RegionID').val(), isDisplay: 1
 
             },
             error: function (msg) { //若Ajax处理失败后返回的信息
@@ -151,7 +151,8 @@
                     CompanyName = "首创股份";
                 }
                 if (CompanyName == "") {
-                    CompanyName = $("#CompanyName").val();
+                    var comName = $("#CompanyName").val();
+                    CompanyName = (typeof (comName)) == 'undefined' ? '首创股份' : comName;
                 }
                 require.config({
                     paths: {

@@ -37,6 +37,7 @@ public class LoginServlet extends HttpServlet {
         String randnum = request.getParameter("randnum"); //随机数
 
         //String userPIN = request.getParameter("userPIN");
+        response.setHeader("Content-type", "text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setDateHeader("Expires", 0);
         PrintWriter out = response.getWriter();

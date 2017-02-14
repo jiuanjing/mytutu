@@ -4,6 +4,10 @@ import com.bws.dbOperation.DBOperation;
 
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class UserInfo implements Serializable {
@@ -93,14 +97,49 @@ public class UserInfo implements Serializable {
         }
     }
 
+    public String getCompanyIds(int userId, DBOperation dbOperation) {
+        List<String> companyIds = new ArrayList<String>();
+
+        String sql = "SELECT A.COMPANY_ID " +
+                "  FROM ECHARTS.REF_ROLE_FN_COMPANY A, BIM.ROLE_FN_LIMITED B,BIM.USER_ROLE_FN C " +
+                " WHERE A.ROLE_ID = B.ROLE_ID " +
+                "   AND B.ROLE_ID = C.ROLE_ID " +
+                "   AND C.USER_ID = "+userId;
+        ResultSet resultSet = dbOperation.executeQuery(sql);
+        if (resultSet != null) {
+            try {
+                while (resultSet.next()) {
+                    companyIds.add(resultSet.getString(1));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        StringBuilder companyId = new StringBuilder();
+        companyId.append("(");
+        for (int i = 0; i < companyIds.size(); i++) {
+            if (i != companyIds.size() - 1) {
+                companyId.append(companyIds.get(i));
+                companyId.append(",");
+            } else {
+                companyId.append(companyIds.get(i));
+            }
+        }
+        companyId.append(")");
+        return companyId.toString();
+    }
+
     public boolean ca_check_login(String UserPassword, DBOperation db, UserInfo user) {
         try {
             if (UserPassword == null || db == null) {
                 return false;
             }
 
-            String sqlstr = "select user_id,user_account,user_password,user_name,company_id,dept_id,position,role_id,email,phone,mobile,status,page_size from bim.user_info where status=1 and user_password='" + UserPassword + "'";
-
+            String sqlstr = "select t.user_id,t.user_account,t.user_password,t.user_name,t.company_id,t.dept_id," +
+                    "t.position,t.role_id,t.email,t.phone,t.mobile,t.status,t.page_size, t1.dept_id_op " +
+                    "from bim.user_info t,bim.department t1 " +
+                    "where t1.dept_id = t.dept_id and t.status=1 and t.user_password='" + UserPassword + "'";
             Vector<Vector<String>> ve = db.executeQueryVt(sqlstr);
 
             if (ve == null || ve.size() == 0) {
@@ -120,7 +159,7 @@ public class UserInfo implements Serializable {
                 user.setMobile((ve.elementAt(0)).elementAt(10).toString());
                 user.setStatus(Integer.parseInt((ve.elementAt(0)).elementAt(11).toString()));
                 user.setPageSize(Integer.parseInt((ve.elementAt(0)).elementAt(12).toString()));
-                user.setDeptIDOp(Integer.parseInt((ve.elementAt(0)).elementAt(14).toString()));
+                user.setDeptIDOp(Integer.parseInt((ve.elementAt(0)).elementAt(13).toString()));
 
                 user.setLoginFlag(true);
 

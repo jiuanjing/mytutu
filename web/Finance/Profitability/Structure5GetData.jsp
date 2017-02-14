@@ -10,6 +10,7 @@
          import="com.bws.dbOperation.DBOperation,com.bws.util.DateTool,com.google.gson.Gson,java.sql.ResultSet,java.util.ArrayList,java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<jsp:useBean id="userInfo" class="com.bws.util.UserInfo" scope="session"/>
 <%
     //实例化数据库链接
     DBOperation db = new DBOperation(true);
@@ -70,6 +71,10 @@
             }
             if (BUId != null && !(BUId.equals("")) && !(BUId.equals("null"))) {
                 where += " and b.bu_id =" + BUId;
+            }
+            String companyIDs = userInfo.getCompanyIds(userInfo.getUserID(), db);
+            if (companyIDs.length() > 3) {
+                where += " and a.company_id in " + companyIDs;
             }
             where += " and b.status=1 and b.company_level=2 order by " + target + " desc";
 

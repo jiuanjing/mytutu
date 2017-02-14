@@ -10,6 +10,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
          import="com.bws.dbOperation.DBOperation,com.bws.util.PinYinUtil,com.google.gson.Gson,java.sql.ResultSet,java.util.ArrayList,java.util.HashMap,java.util.List" %>
 <%@ page import="java.util.Map" %>
+<jsp:useBean id="userInfo" class="com.bws.util.UserInfo" scope="session"/>
 <%
     //实例化数据库链接
     DBOperation db = new DBOperation(true);
@@ -27,7 +28,12 @@
             } else {
                 sqlstr = "select a.company_id , a.company_name from echarts." + tableName + " a where a.status = 1";
             }
-            //System.out.print(sqlstr);
+            String companyIDs = userInfo.getCompanyIds(userInfo.getUserID(), db);
+            if (companyIDs.length() > 3) {
+                sqlstr += " and company_id in " + companyIDs;
+            }
+
+//            System.out.print(sqlstr);
             ResultSet rs = null;
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集
 

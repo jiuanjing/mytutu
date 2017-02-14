@@ -148,7 +148,7 @@
 
                 var arrayData = eval(return_data);
                 var CompanyName = $("#CompanyID").find("option:selected").text();
-                if (CompanyName == "--请选择公司--") {
+                if (CompanyName == "--请选择公司--"||typeof (CompanyName) == 'undefined') {
                     CompanyName = "首创股份";
                 }
                 if (CompanyName == "") {
@@ -178,7 +178,9 @@
                             });
                             return;
                         }
+
                         $("#Main_title").html(CompanyName + '归属于母公司的净资产收益率趋势分析');
+                        console.log(CompanyName);
                         var option = {
                             grid: {
                                 y2: 80

@@ -150,7 +150,7 @@
                 //$('#value1').val(return_data);      //调试用
                 var arrayData = eval(return_data);
                 var CompanyName = $("#CompanyID").find("option:selected").text();
-                if (CompanyName == "--请选择公司--") {
+                if (CompanyName == "--请选择公司--"||typeof (CompanyName) == 'undefined') {
                     CompanyName = "首创股份";
                 }
                 if (CompanyName == "") {

@@ -36,7 +36,7 @@
             sqlstr += where;
             ResultSet rs = null;
             rs = db.executeQuery(sqlstr);//通过数据库访问程序返回一个可滚动的记录集
-            //System.out.println(sqlstr);
+//            System.out.println(sqlstr);
             if (rs == null) {
                 throw new Exception("对不起！系统在查询数据库时出错");
             }
