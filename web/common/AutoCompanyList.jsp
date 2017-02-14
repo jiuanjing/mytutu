@@ -23,10 +23,10 @@
             //获取分析的数据库表的名字
             String tableName = request.getParameter("tableName").trim();
             if ("1".equals(isDisplay)) {
-                sqlstr = "select distinct company_id,company_name from echarts.dim_company_fn where status=1 " +
+                sqlstr = "select distinct company_id,brief_name from echarts.dim_company_fn where status=1 " +
                         "and flag_display = 1";
             } else {
-                sqlstr = "select a.company_id , a.company_name from echarts." + tableName + " a where a.status = 1";
+                sqlstr = "select a.company_id , a.brief_name from echarts." + tableName + " a where a.status = 1";
             }
             String companyIDs = userInfo.getCompanyIds(userInfo.getUserID(), db);
             if (companyIDs.length() > 3) {
