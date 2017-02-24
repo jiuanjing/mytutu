@@ -5,7 +5,8 @@
      **********************************************************************************************************************/
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-         import="java.util.Date,java.util.*,com.google.gson.Gson,java.sql.*,com.bws.dbOperation.*,com.bws.util.*,java.text.DecimalFormat" %>
+         import="com.bws.dbOperation.DBOperation,com.google.gson.Gson,java.sql.ResultSet,java.text.DecimalFormat,java.util.ArrayList,java.util.HashMap,java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%
     //实例化数据库链接
     DBOperation db = new DBOperation(true);

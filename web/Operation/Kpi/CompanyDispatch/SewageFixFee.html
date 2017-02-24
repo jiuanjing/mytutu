@@ -90,7 +90,7 @@
 		        var data = "";
 		        for(var i=0;i<arrayData.length;i++){
 	        		data+="<tr>"
-		                +"<td style=\"text-align:left;\"><a href=\"../Company/SewageManageFee.html?CompanyID="+arrayData[i].company_id+"&date="+date+"\" title=\""+arrayData[i].brief_name+"吨水维修费\">"+arrayData[i].brief_name+"</a></td>"  
+		                +"<td style=\"text-align:left;\"><a href=\"../Company/SewageFixFee.html?CompanyID="+arrayData[i].company_id+"&date="+date+"\" title=\""+arrayData[i].brief_name+"吨水维修费\">"+arrayData[i].brief_name+"</a></td>"
 		                +"<td style=\"text-align:center;\">"+arrayData[i].all_cy+"</td>"
 		                +"<td style=\"text-align:center;\">"+arrayData[i].all_bt+"</td>"
 		                +"<td style=\"text-align:center;background-color:#E0E0E0; \">"+arrayData[i].all_bt_dif+"</td>" 
@@ -248,7 +248,7 @@
         	            			CompanyID = arrayData[i].company_id;
         	            		}
         	            	}
-                         	window.location="../Company/SewageManageFee.html?CompanyID="+CompanyID+"&date="+date;
+                         	window.location="../Company/SewageFixFee.html?CompanyID="+CompanyID+"&date="+date;
                         });
                         myChart.setOption(option); 
                     }
