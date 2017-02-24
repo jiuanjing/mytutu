@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>项目地域分布</title>
+    <script type="text/javascript" src="../../scripts/jquery-1.6.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery-ui.min.js"></script>
+    <script src="../../scripts/DatePicker_zh_cn.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/jquery-ui.css"/>
+    <script type="text/javascript" src="../../scripts/jquery.easyui.min.js"></script>
+    <script src="../../scripts/echarts.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/condition-table.css"/>
+    <link rel="stylesheet" type="text/css" href="../../scripts/easyui-1.3.6/themes/myself_fg/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../scripts/easyui-1.3.6/themes/icon.css">
+    <script type="text/javascript" src="../../scripts/easyui-lang-zh_CN.js"></script>
+    <style>
+        .datagrid-header .datagrid-cell span {
+            /*font-weight: bold;*/
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .datagrid-header {
+            position: absolute; visibility: hidden;
+        }
+        .panel-title {
+            font-size: 10px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            require.config({
+                paths: {
+                    echarts: '../../scripts'
+                }
+            });
+            showData1();
+            getDataGrid();
+            $('#tt').tabs({
+                onSelect: function (title) {
+                    if (title == "处理规模区域分析") {
+                        showData1();
+                    } else if (title == "项目数量区域分析") {
+                        showData2();
+                    } else {
+                        showData3();
+                    }
+                }
+            });
+        });
+
+        function getDataGrid() {
+            $('.tg').datagrid({
+                url: "RegionDiv2.jsp",
+                method: 'post',
+                singleSelect: true,
+                fitColumns: true,
+                sortOrder: 'desc',
+                remoteSort: false,
+                rowNumbers: false,
+                queryParams: {
+                    province: encodeURIComponent('中国')
+                },
+                loadMsg: '正在加载数据，请稍等......',
+                columns: [[
+                    {
+                        field: 'kpiType',
+                        align: 'center',
+                        styler: function (value, row, index) {
+                            return 'color:blue;';
+                        },
+                        formatter: function (value, row, index) {
+                            return '<span style="font-size:10px">' + value + '</span>';
+                        }
+                    },
+                    {
+                        field: 'kpiName',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            return '<span style="font-size:10px">' + value + '</span>';
+                        }
+                    },
+                    {
+                        field: 'kpiValue',
+                        align: 'right',
+                        formatter: function (value, row, index) {
+                            return '<span style="font-size:10px">' + value + '</span>';
+                        }
+                    }]],
+                onLoadSuccess: function () {
+                    var merges = [{
+                        index: 0,
+                        rowspan: 2
+                    }, {
+                        index: 2,
+                        rowspan: 3
+                    }, {
+                        index: 5,
+                        rowspan: 3
+                    }];
+                    for (var i = 0; i < merges.length; i++)
+                        $('.tg').datagrid('mergeCells', {
+                            index: merges[i].index,
+                            field: 'kpiType',
+                            rowspan: merges[i].rowspan
+                        });
+                }
+            });
+        }
+        function showData1() {
+            $.ajax({
+                    url: 'RegionGetData.jsp',
+                    dataType: 'json',
+                    type: 'post',
+                    error: function (msg) {
+                        alert("Ajax获取数据失败");
+                    },
+                    success: function (return_data) {
+                        require(
+                            [
+                                'echarts',
+                                'echarts/chart/map',
+                                'echarts/chart/line',
+                                'echarts/chart/bar'
+                            ],
+                            function (ec) {
+                                var myChart = ec.init(document.getElementById('main1'));
+                                var option = {
+                                    title: {
+                                        text: '全国水务处理规模区域分布',
+                                        x: 'center',
+                                        textStyle: {
+                                            fontSize: 9
+                                        }
+                                    },
+                                    tooltip: {
+                                        trigger: 'item',
+                                        formatter: function (params) {
+                                            var res = params.name + '<br/>';
+                                            var myseries = option.series;
+                                            for (var i = 0; i < myseries.length; i++) {
+                                                res += myseries[i].name;
+                                                for (var j = 0; j < myseries[i].data.length; j++) {
+                                                    if (myseries[i].data[j].name == params.name) {
+                                                        res += ' : ' + myseries[i].data[j].value + '万吨</br>';
+                                                    }
+                                                }
+                                            }
+                                            return res;
+                                        }
+                                    },
+                                    legend: {
+                                        show: false,
+                                        orient: 'vertical',
+                                        x: 'left',
+                                        data: ['处理规模']
+                                    },
+                                    dataRange: {
+                                        show: false,
+                                        x: 'left',
+                                        y: 'bottom',
+                                        splitList: [
+                                            {start: 200},
+                                            {start: 100, end: 200},
+                                            {start: 50, end: 100},
+                                            {start: 20, end: 50},
+                                            {end: 20}
+                                        ],
+                                        color: ['#CC0000','#FF8800', '#0000CD', '#4169E1', '#00BFFF',  '#ADD8E6']
+                                    },
+                                    series: [
+                                        {
+                                            name: '处理规模',
+                                            type: 'map',
+                                            mapType: 'china',
+                                            selectedMode: 'single',
+                                            roam: false,
+                                            itemStyle: {
+                                                normal: {
+                                                    borderWidth: 1,
+                                                    label: {
+                                                        show: true,
+                                                        textStyle: {
+                                                            fontSize: 9
+                                                        }
+                                                    }
+                                                },
+                                                emphasis: {                 // 也是选中样式
+                                                    label: {
+                                                        show: true
+                                                    }
+                                                }
+                                            },
+                                            data: return_data.scale
+                                        }
+                                    ]
+                                };
+                                var ecConfig = require('echarts/config');
+
+                                var curIndx = 0;
+                                var mapType = [
+                                    'china',
+                                    // 23个省
+                                    '广东', '青海', '四川', '海南', '陕西',
+                                    '甘肃', '云南', '湖南', '湖北', '黑龙江',
+                                    '贵州', '山东', '江西', '河南', '河北',
+                                    '山西', '安徽', '福建', '浙江', '江苏',
+                                    '吉林', '辽宁', '台湾',
+                                    // 5个自治区
+                                    '新疆', '广西', '宁夏', '内蒙古', '西藏',
+                                    // 4个直辖市
+                                    '北京', '天津', '上海', '重庆',
+                                    // 2个特别行政区
+                                    '香港', '澳门'
+                                ];
+                                myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param) {
+                                    var len = mapType.length;
+                                    var mt = mapType[curIndx % len];
+                                    if (mt == 'china') {
+                                        // 全国选择时指定到选中的省份
+                                        var selected = param.selected;
+                                        for (var i in selected) {
+                                            if (selected[i]) {
+                                                mt = i;
+                                                while (len--) {
+                                                    if (mapType[len] == mt) {
+                                                        curIndx = len;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        //销售量sales,销售量同比salesYoY,收入income,收入同比incomeYoY
+                                        mt = encodeURIComponent(mt);
+//                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
+                                    }
+                                });
+                                myChart.setOption(option);
+                                window.onresize = myChart.resize;
+                            }
+                        );
+                    }
+                }
+            );
+        }
+        function showData2() {
+            $.ajax({
+                    url: 'RegionGetData.jsp',
+                    dataType: 'json',
+                    type: 'post',
+                    error: function (msg) {
+                        alert("Ajax获取数据失败");
+                    },
+                    success: function (return_data) {
+                        require(
+                            [
+                                'echarts',
+                                'echarts/chart/map',
+                                'echarts/chart/line',
+                                'echarts/chart/bar'
+                            ],
+                            function (ec) {
+                                var myChart = ec.init(document.getElementById('main2'));
+                                var option = {
+                                    title: {
+                                        text: '全国水务项目数量区域分布',
+                                        x: 'center',
+                                        textStyle: {
+                                            fontSize: 9
+                                        }
+                                    },
+                                    tooltip: {
+                                        trigger: 'item',
+                                        formatter: function (params) {
+                                            var res = params.name + '<br/>';
+                                            var myseries = option.series;
+                                            for (var i = 0; i < myseries.length; i++) {
+                                                res += myseries[i].name;
+                                                for (var j = 0; j < myseries[i].data.length; j++) {
+                                                    if (myseries[i].data[j].name == params.name) {
+                                                        res += ' : ' + myseries[i].data[j].value + '个</br>';
+                                                    }
+                                                }
+                                            }
+                                            return res;
+                                        }
+                                    },
+                                    dataRange: {
+                                        show:false,
+                                        x: 'left',
+                                        y: 'bottom',
+                                        splitList: [
+                                            {start: 15},
+                                            {start: 10, end: 15},
+                                            {start: 7, end: 10},
+                                            {start: 5, end: 7},
+                                            {start: 3, end: 5},
+                                            {end: 3}
+                                        ],
+                                        color: ['#CC0000','#FF8800', '#0000CD', '#4169E1', '#00BFFF',  '#ADD8E6']
+                                    },
+                                    toolbox: {
+                                        show: false,
+                                        orient: 'vertical',
+                                        x: 'right',
+                                        y: 'center',
+                                        feature: {
+                                            mark: {show: true},
+                                            dataView: {show: true, readOnly: false},
+                                            restore: {show: true},
+                                            saveAsImage: {show: true}
+                                        }
+                                    },
+                                    roamController: {
+                                        show: false,
+                                        x: 'right',
+                                        y: 'bottom',
+                                        mapTypeControl: {
+                                            'china': true
+                                        }
+                                    },
+                                    series: [
+                                        {
+                                            name: '项目数量',
+                                            type: 'map',
+                                            mapType: 'china',
+                                            selectedMode: 'single',
+                                            roam: false,
+                                            itemStyle: {
+                                                normal: {
+                                                    borderWidth: 1,
+                                                    label: {
+                                                        show: true,
+                                                        textStyle: {
+                                                            fontSize: 9
+                                                        }
+                                                    }
+                                                },
+                                                emphasis: {                 // 也是选中样式
+                                                    borderWidth: 1,
+                                                    label: {
+                                                        show: true
+                                                    }
+                                                }
+                                            },
+                                            data: return_data.count
+                                        }
+                                    ]
+                                };
+                                var ecConfig = require('echarts/config');
+                                var zrEvent = require('zrender/tool/event');
+                                var curIndx = 0;
+                                var mapType = [
+                                    'china',
+                                    // 23个省
+                                    '广东', '青海', '四川', '海南', '陕西',
+                                    '甘肃', '云南', '湖南', '湖北', '黑龙江',
+                                    '贵州', '山东', '江西', '河南', '河北',
+                                    '山西', '安徽', '福建', '浙江', '江苏',
+                                    '吉林', '辽宁', '台湾',
+                                    // 5个自治区
+                                    '新疆', '广西', '宁夏', '内蒙古', '西藏',
+                                    // 4个直辖市
+                                    '北京', '天津', '上海', '重庆',
+                                    // 2个特别行政区
+                                    '香港', '澳门'
+                                ];
+                                myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param) {
+                                    var len = mapType.length;
+                                    var mt = mapType[curIndx % len];
+                                    if (mt == 'china') {
+                                        // 全国选择时指定到选中的省份
+                                        var selected = param.selected;
+                                        for (var i in selected) {
+                                            if (selected[i]) {
+                                                mt = i;
+                                                while (len--) {
+                                                    if (mapType[len] == mt) {
+                                                        curIndx = len;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        //销售量sales,销售量同比salesYoY,收入income,收入同比incomeYoY
+                                        mt = encodeURIComponent(mt);
+//                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
+                                    }
+                                });
+                                myChart.setOption(option);
+                                window.onresize = myChart.resize;
+                            }
+                        );
+                    }
+                }
+            );
+        }
+        function showData3() {
+            $.ajax({
+                    url: 'RegionGetData.jsp',
+                    dataType: 'json',
+                    type: 'post',
+                    error: function (msg) {
+                        alert("Ajax获取数据失败");
+                    },
+                    success: function (return_data) {
+                        require(
+                            [
+                                'echarts',
+                                'echarts/chart/map',
+                                'echarts/chart/line',
+                                'echarts/chart/bar'
+                            ],
+                            function (ec) {
+                                var myChart = ec.init(document.getElementById('main3'));
+                                var option = {
+                                    title: {
+                                        text: '全国水务投资额区域分布',
+                                        x: 'center',
+                                        textStyle: {
+                                            fontSize: 9
+                                        }
+                                    },
+                                    tooltip: {
+                                        trigger: 'item',
+                                        formatter: function (params) {
+                                            var res = params.name + '<br/>';
+                                            var myseries = option.series;
+                                            for (var i = 0; i < myseries.length; i++) {
+                                                res += myseries[i].name;
+                                                for (var j = 0; j < myseries[i].data.length; j++) {
+                                                    if (myseries[i].data[j].name == params.name) {
+                                                        res += ' : ' + myseries[i].data[j].value + '亿元</br>';
+                                                    }
+                                                }
+                                            }
+                                            return res;
+                                        }
+                                    },
+                                    dataRange: {
+                                        show:false,
+                                        x: 'left',
+                                        y: 'bottom',
+                                        splitList: [
+                                            {start: 10},
+                                            {start: 7, end: 9},
+                                            {start: 5, end: 7},
+                                            {start: 3, end: 5},
+                                            {start: 1, end: 3},
+                                            {end: 1}
+                                        ],
+                                        color: ['#CC0000','#FF8800', '#0000CD', '#4169E1', '#00BFFF',  '#ADD8E6']
+                                    },
+                                    toolbox: {
+                                        show: false,
+                                        orient: 'vertical',
+                                        x: 'right',
+                                        y: 'center',
+                                        feature: {
+                                            mark: {show: true},
+                                            dataView: {show: true, readOnly: false},
+                                            restore: {show: true},
+                                            saveAsImage: {show: true}
+                                        }
+                                    },
+                                    roamController: {
+                                        show: false,
+                                        x: 'right',
+                                        y: 'bottom',
+                                        mapTypeControl: {
+                                            'china': true
+                                        }
+                                    },
+                                    series: [
+                                        {
+                                            name: '投资额',
+                                            type: 'map',
+                                            mapType: 'china',
+                                            selectedMode: 'single',
+                                            roam: false,
+                                            itemStyle: {
+                                                normal: {
+                                                    borderWidth: 1,
+                                                    label: {
+                                                        show: true,
+                                                        textStyle: {
+                                                            fontSize: 9
+                                                        }
+                                                    }
+                                                },
+                                                emphasis: {                 // 也是选中样式
+                                                    borderWidth: 1,
+                                                    label: {
+                                                        show: true
+                                                    }
+                                                }
+                                            },
+                                            data: return_data.invest
+                                        }
+                                    ]
+                                };
+                                var ecConfig = require('echarts/config');
+                                var zrEvent = require('zrender/tool/event');
+                                var curIndx = 0;
+                                var mapType = [
+                                    'china',
+                                    // 23个省
+                                    '广东', '青海', '四川', '海南', '陕西',
+                                    '甘肃', '云南', '湖南', '湖北', '黑龙江',
+                                    '贵州', '山东', '江西', '河南', '河北',
+                                    '山西', '安徽', '福建', '浙江', '江苏',
+                                    '吉林', '辽宁', '台湾',
+                                    // 5个自治区
+                                    '新疆', '广西', '宁夏', '内蒙古', '西藏',
+                                    // 4个直辖市
+                                    '北京', '天津', '上海', '重庆',
+                                    // 2个特别行政区
+                                    '香港', '澳门'
+                                ];
+                                myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param) {
+                                    var len = mapType.length;
+                                    var mt = mapType[curIndx % len];
+                                    if (mt == 'china') {
+                                        // 全国选择时指定到选中的省份
+                                        var selected = param.selected;
+                                        for (var i in selected) {
+                                            if (selected[i]) {
+                                                mt = i;
+                                                while (len--) {
+                                                    if (mapType[len] == mt) {
+                                                        curIndx = len;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        //销售量sales,销售量同比salesYoY,收入income,收入同比incomeYoY
+                                        mt = encodeURIComponent(mt);
+//                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
+                                    }
+                                });
+                                myChart.setOption(option);
+                                window.onresize = myChart.resize;
+                            }
+                        );
+                    }
+                }
+            );
+        }
+    </script>
+</head>
+<body style="overflow-y: hidden">
+<div id="map">
+    <div id="tt" class="easyui-tabs" data-options="plain:true" style="height: 290px">
+        <div title="处理规模区域分析" style="overflow: hidden">
+            <div id="main1" style=height:250px;float:left;width:60%;"></div>
+            <div style="background-color: #ffffff; height: 300px;width:35%; float: right; margin-top: 1%;margin-right: 1%">
+                <table class="tg">
+                </table>
+            </div>
+        </div>
+        <div title="项目数量区域分析" style="overflow: hidden;height: 290px">
+            <div id="main2" style=height:250px;float:left;width:60%;"></div>
+            <div style="background-color: #ffffff; height: 300px;width:35%; float: right; margin-top: 1%;margin-right: 1%">
+                <table class="tg">
+                </table>
+            </div>
+        </div>
+        <div title="投资额区域分析" style="overflow: hidden;height: 290px">
+            <div id="main3" style=height:250px;float:left;width:60%;"></div>
+            <div style="background-color: #ffffff; height: 300px;width:35%; float: right; margin-top: 1%;margin-right: 1%">
+                <table class="tg">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
