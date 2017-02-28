@@ -21,8 +21,10 @@
         }
 
         .datagrid-header {
-            position: absolute; visibility: hidden;
+            position: absolute;
+            visibility: hidden;
         }
+
         .panel-title {
             font-size: 10px;
         }
@@ -54,7 +56,6 @@
                 url: "RegionDiv2.jsp",
                 method: 'post',
                 singleSelect: true,
-                fitColumns: true,
                 sortOrder: 'desc',
                 remoteSort: false,
                 rowNumbers: false,
@@ -69,6 +70,7 @@
                         styler: function (value, row, index) {
                             return 'color:blue;';
                         },
+                        width: 70,
                         formatter: function (value, row, index) {
                             return '<span style="font-size:10px">' + value + '</span>';
                         }
@@ -76,6 +78,7 @@
                     {
                         field: 'kpiName',
                         align: 'center',
+                        width: 90,
                         formatter: function (value, row, index) {
                             return '<span style="font-size:10px">' + value + '</span>';
                         }
@@ -83,6 +86,7 @@
                     {
                         field: 'kpiValue',
                         align: 'right',
+                        width: 50,
                         formatter: function (value, row, index) {
                             return '<span style="font-size:10px">' + value + '</span>';
                         }
@@ -166,7 +170,7 @@
                                             {start: 20, end: 50},
                                             {end: 20}
                                         ],
-                                        color: ['#CC0000','#FF8800', '#0000CD', '#4169E1', '#00BFFF',  '#ADD8E6']
+                                        color: ['#CC0000', '#FF8800', '#0000CD', '#4169E1', '#00BFFF', '#ADD8E6']
                                     },
                                     series: [
                                         {
@@ -232,7 +236,7 @@
                                         }
                                         //销售量sales,销售量同比salesYoY,收入income,收入同比incomeYoY
                                         mt = encodeURIComponent(mt);
-//                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
+                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
                                     }
                                 });
                                 myChart.setOption(option);
@@ -286,7 +290,7 @@
                                         }
                                     },
                                     dataRange: {
-                                        show:false,
+                                        show: false,
                                         x: 'left',
                                         y: 'bottom',
                                         splitList: [
@@ -297,7 +301,7 @@
                                             {start: 3, end: 5},
                                             {end: 3}
                                         ],
-                                        color: ['#CC0000','#FF8800', '#0000CD', '#4169E1', '#00BFFF',  '#ADD8E6']
+                                        color: ['#CC0000', '#FF8800', '#0000CD', '#4169E1', '#00BFFF', '#ADD8E6']
                                     },
                                     toolbox: {
                                         show: false,
@@ -384,7 +388,7 @@
                                         }
                                         //销售量sales,销售量同比salesYoY,收入income,收入同比incomeYoY
                                         mt = encodeURIComponent(mt);
-//                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
+                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
                                     }
                                 });
                                 myChart.setOption(option);
@@ -438,7 +442,7 @@
                                         }
                                     },
                                     dataRange: {
-                                        show:false,
+                                        show: false,
                                         x: 'left',
                                         y: 'bottom',
                                         splitList: [
@@ -449,7 +453,7 @@
                                             {start: 1, end: 3},
                                             {end: 1}
                                         ],
-                                        color: ['#CC0000','#FF8800', '#0000CD', '#4169E1', '#00BFFF',  '#ADD8E6']
+                                        color: ['#CC0000', '#FF8800', '#0000CD', '#4169E1', '#00BFFF', '#ADD8E6']
                                     },
                                     toolbox: {
                                         show: false,
@@ -536,7 +540,7 @@
                                         }
                                         //销售量sales,销售量同比salesYoY,收入income,收入同比incomeYoY
                                         mt = encodeURIComponent(mt);
-//                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
+                                        window.self.location.href = 'ProvinceProjectNumber.html?mt=' + mt;
                                     }
                                 });
                                 myChart.setOption(option);
@@ -553,22 +557,22 @@
 <div id="map">
     <div id="tt" class="easyui-tabs" data-options="plain:true" style="height: 290px">
         <div title="处理规模区域分析" style="overflow: hidden">
-            <div id="main1" style=height:250px;float:left;width:60%;"></div>
-            <div style="background-color: #ffffff; height: 300px;width:35%; float: right; margin-top: 1%;margin-right: 1%">
+            <div id="main1" style=height:250px;float:left;width:55%;"></div>
+            <div style="background-color: #ffffff; height: 300px;width:40%; float: right; margin-top: 1%;margin-right: 1%">
                 <table class="tg">
                 </table>
             </div>
         </div>
         <div title="项目数量区域分析" style="overflow: hidden;height: 290px">
-            <div id="main2" style=height:250px;float:left;width:60%;"></div>
-            <div style="background-color: #ffffff; height: 300px;width:35%; float: right; margin-top: 1%;margin-right: 1%">
+            <div id="main2" style=height:250px;float:left;width:55%;"></div>
+            <div style="background-color: #ffffff; height: 300px;width:40%; float: right; margin-top: 1%;margin-right: 1%">
                 <table class="tg">
                 </table>
             </div>
         </div>
         <div title="投资额区域分析" style="overflow: hidden;height: 290px">
-            <div id="main3" style=height:250px;float:left;width:60%;"></div>
-            <div style="background-color: #ffffff; height: 300px;width:35%; float: right; margin-top: 1%;margin-right: 1%">
+            <div id="main3" style=height:250px;float:left;width:55%;"></div>
+            <div style="background-color: #ffffff; height: 300px;width:40%; float: right; margin-top: 1%;margin-right: 1%">
                 <table class="tg">
                 </table>
             </div>
